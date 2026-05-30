@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Crust House — Premium Pizza & Fast Food in Barakahu</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Rokkitt:wght@500;700;900&display=swap" rel="stylesheet">
+
+  <style>
+    /* Appetite-Whetting Color Palette */
+    :root {
+      --primary-red: #d32f2f;
+      --secondary-gold: #f5b041;
+      --bg-warm: #fffdf9;
+      --bg-card: #ffffff;
+      --text-dark: #2c3e50;
+      --text-muted: #7f8c8d;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body { 
+      font-family: 'Inter', sans-serif; 
+      background-color: var(--bg-warm); 
+      color: var(--text-dark); 
+      line-height: 1.6; 
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    h1, h2, h3, .brand { font-family: 'Rokkitt', serif; }
+    .uppercase-text { text-transform: uppercase; letter-spacing: 1px; }
+
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+    section { padding: 80px 0; }
+    .section-title { 
+      text-align: center; 
+      font-size: 48px; 
+      margin-bottom: 50px; 
+      color: var(--primary-red);
+      font-weight: 900;
+    }
+
+    /* Navigation */
+    header { 
+      background: #ffffff; 
+      position: sticky; top: 0; z-index: 100; 
+      box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    }
+    nav { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; max-width: 1200px; margin: 0 auto; }
+    
+    .logo-container { display: flex; align-items: center; gap: 10px; text-decoration: none; cursor: pointer; }
+    .logo-img { height: 50px; width: auto; }
+    .brand { font-size: 32px; font-weight: 900; color: var(--primary-red); text-transform: uppercase; }
+    
+    nav ul { list-style: none; display: flex; gap: 30px; }
+    nav ul li a { 
+      color: var(--text-dark); 
+      text-decoration: none; 
+      font-weight: 600; 
+      font-size: 15px; 
+      text-transform: uppercase; 
+      transition: 0.3s;
+      cursor: pointer;
+      padding-bottom: 5px;
+    }
+    nav ul li a:hover, nav ul li a.active { 
+      color: var(--primary-red); 
+      border-bottom: 2px solid var(--primary-red);
+    }
+
+    /* Page Sections Setup */
+    .page-section { display: none; padding-bottom: 80px; flex-grow: 1; }
+    .page-section.active-page { display: block; animation: fadeIn 0.4s ease-in-out; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ---------------- PAGE: HOME ---------------- */
+    .hero {
+      background: linear-gradient(rgba(18, 18, 18, 0.7), rgba(18, 18, 18, 0.8)), url('main.jpeg');
+      background-size: cover; background-position: center;
+      text-align: center; padding: 160px 20px; color: #fff;
+    }
+    .hero h1 { font-size: 70px; margin-bottom: 15px; color: var(--secondary-gold); text-shadow: 2px 2px 4px rgba(0,0,0,0.5); text-transform: uppercase; }
+    .hero p { font-size: 22px; margin-bottom: 40px; font-weight: 300; max-width: 700px; margin-left: auto; margin-right: auto; }
+    
+    .btn { 
+      background: var(--primary-red); color: #fff; padding: 16px 40px; 
+      text-decoration: none; font-weight: 700; text-transform: uppercase;
+      border-radius: 50px; display: inline-block; transition: all 0.3s ease;
+      font-size: 16px; cursor: pointer; border: none;
+      box-shadow: 0 6px 15px rgba(211, 47, 47, 0.3);
+    }
+    .btn:hover { background: #b71c1c; transform: translateY(-3px); box-shadow: 0 8px 20px rgba(211, 47, 47, 0.4); }
+
+    /* Highlights Section */
+    .highlights-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 30px;
+    }
+    .highlight-card {
+      background: var(--bg-card); padding: 30px; border-radius: 12px; border-top: 5px solid var(--primary-red); box-shadow: 0 6px 20px rgba(0,0,0,0.06); text-align: center;
+    }
+    .highlight-icon { font-size: 36px; margin-bottom: 10px; }
+    .highlight-card h3 { font-size: 24px; color: var(--primary-red); margin-bottom: 10px; font-family: 'Rokkitt', serif; text-transform: uppercase; }
+    .highlight-card p { font-size: 15px; color: var(--text-dark); margin-bottom: 20px; }
+
+    /* Featured Review Section */
+    .reviews { background: rgba(0,0,0,0.02); }
+    .review-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+    .review-card { background: var(--bg-card); padding: 30px; border-radius: 8px; border-left: 4px solid var(--secondary-gold); box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+    .stars { color: var(--secondary-gold); font-size: 20px; margin-bottom: 10px; }
+    .review-text { font-style: italic; color: #555; margin-bottom: 15px; }
+    .reviewer { font-weight: 600; font-family: 'Inter', sans-serif; color: var(--text-dark); text-transform: uppercase; font-size: 14px; }
+
+    /* ---------------- PAGE: MENU ---------------- */
+    .menu-header {
+      background: var(--primary-red); color: #fff; text-align: center; padding: 60px 20px; margin-bottom: 40px;
+    }
+    .menu-header h1 { font-size: 48px; color: var(--secondary-gold); text-transform: uppercase; }
+
+    .category-wrapper { margin-top: 60px; }
+    .category-title {
+      font-size: 36px; color: var(--primary-red); margin-bottom: 25px; 
+      border-bottom: 3px solid var(--secondary-gold); display: inline-block; padding-right: 20px;
+    }
+    
+    .category-content { display: flex; gap: 50px; align-items: flex-start; }
+    .menu-list { flex: 1; display: flex; flex-direction: column; gap: 18px; }
+    
+    .menu-item { display: flex; align-items: flex-end; width: 100%; }
+    .item-info { display: flex; flex-direction: column; }
+    .item-name { font-size: 18px; font-weight: 700; color: var(--text-dark); }
+    .item-desc { font-size: 14px; color: var(--text-muted); font-weight: 600; margin-top: 2px; }
+    
+    .item-dots { flex-grow: 1; border-bottom: 2px dotted #d1d8dd; margin: 0 15px 6px 15px; opacity: 0.8; }
+    
+    .item-price { font-family: 'Rokkitt', serif; font-size: 22px; font-weight: 700; color: var(--primary-red); white-space: nowrap; }
+
+    .category-image { flex: 0 0 350px; }
+    .category-image img { width: 100%; height: auto; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); border: 4px solid var(--secondary-gold); }
+
+    /* ---------------- PAGE: ABOUT US ---------------- */
+    .about-container { max-width: 900px; margin: 80px auto; padding: 0 20px; text-align: center; }
+    .about-title { font-size: 48px; color: var(--primary-red); margin-bottom: 30px; font-weight: 900; text-transform: uppercase; }
+    .about-text { font-size: 18px; color: var(--text-dark); line-height: 1.8; margin-bottom: 20px; text-align: justify; }
+    .about-image { width: 100%; height: 400px; object-fit: cover; border-radius: 16px; margin: 40px 0; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+
+    /* Contact & Order Section Footer */
+    footer { background: #2c3e50; color: #fff; text-align: center; padding: 60px 20px; margin-top: auto; border-top: 1px solid #333; }
+    .contact-info { font-size: 18px; color: #bdc3c7; margin-bottom: 30px; line-height: 2; }
+    .contact-info strong { color: var(--secondary-gold); }
+    .wa-btn { background: #25D366; color: #fff; padding: 12px 30px; display: inline-block; text-decoration: none; font-weight: bold; border-radius: 50px; box-shadow: 0 6px 15px rgba(37, 211, 102, 0.3); transition: 0.3s; }
+    .wa-btn:hover { background: #1ebe58; box-shadow: 0 8px 20px rgba(37, 211, 102, 0.4); transform: translateY(-2px); }
+
+    @media (max-width: 850px) {
+      .category-content { flex-direction: column; }
+      .category-image { width: 100%; flex: auto; order: -1; margin-bottom: 20px; }
+      .category-image img { max-height: 300px; object-fit: cover; }
+    }
+    @media (max-width: 768px) {
+      nav { flex-direction: column; gap: 15px; }
+      nav ul { flex-wrap: wrap; justify-content: center; }
+      .hero h1 { font-size: 50px; }
+      .menu-item { flex-direction: column; align-items: flex-start; gap: 5px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
+      .item-dots { display: none; }
+      .item-price { align-self: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <nav>
+      <a class="logo-container" onclick="navigate('home')">
+        <img src="main.png" alt="Crust House Logo" class="logo-img">
+        <span class="brand">CRUST HOUSE</span>
+      </a>
+      <ul>
+        <li><a class="nav-link active" id="nav-home" onclick="navigate('home')">Home</a></li>
+        <li><a class="nav-link" id="nav-menu" onclick="navigate('menu')">Menu</a></li>
+        <li><a class="nav-link" id="nav-about" onclick="navigate('about')">About Us</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main id="home" class="page-section active-page">
+    <section class="hero">
+      <div class="container">
+        <h1>Fresh & Hot.<br>Delivered Fast.</h1>
+        <p>Your ultimate destination for freshly baked pizzas, succulent burgers, and fast food perfection in Barakahu. Prepared with love, served with pride.</p>
+        <button class="btn" onclick="navigate('menu')">Explore Our Menu</button>
+      </div>
+    </section>
+
+    <section class="highlights">
+      <div class="container">
+        <h2 class="section-title uppercase-text">Why Order From Us?</h2>
+        <div class="highlights-grid">
+          <div class="highlight-card">
+            <div class="highlight-icon">🚀</div>
+            <h3>FAST & FREE DELIVERY</h3>
+            <p>Hot, fresh food at your doorstep! We offer free delivery within Barakahu on all orders over Rs 1,000.</p>
+          </div>
+          <div class="highlight-card">
+            <div class="highlight-icon">🥬</div>
+            <h3>FRESH INGREDIENTS</h3>
+            <p>We use only the finest, freshest, and locally sourced ingredients to ensure every bite is a flavor explosion.</p>
+          </div>
+          <div class="highlight-card">
+            <div class="highlight-icon">🕒</div>
+            <h3>OPEN TO ORDERS</h3>
+            <p>Cravings have no schedule! We are open and ready to take your orders from 11 AM to 11 PM every single day.</p>
+          </div>
+          <div class="highlight-card">
+            <div class="highlight-icon">⭐</div>
+            <h3>HIGHLY RATED</h3>
+            <p>Rated 4.3 stars by 341+ happy customers. Join the thousands who trust us with their cravings.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="reviews" id="reviews">
+      <div class="container">
+        <h2 class="section-title uppercase-text">Word on the Street</h2>
+        <div class="review-grid">
+          <div class="review-card">
+            <div class="stars">★★★★★</div>
+            <p class="review-text">"Amazing food and service with reasonable prices. Best deals around!"</p>
+            <p class="reviewer">Verified Customer</p>
+          </div>
+          <div class="review-card">
+            <div class="stars">★★★★★</div>
+            <p class="review-text">"Their Special Crust House and square pizza is awesome. Rates are nominal compared to other pizza restaurants."</p>
+            <p class="reviewer">Regular Customer</p>
+          </div>
+          <div class="review-card">
+            <div class="stars">★★★★★</div>
+            <p class="review-text">"No. 1 restaurant in Barakahu — nobody can compete. Specially their pizzas, I love them!"</p>
+            <p class="reviewer">Loyal Fan</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <main id="menu" class="page-section">
+    <div class="menu-header">
+      <h1>Our Complete Menu</h1>
+      <p>Freshly prepared daily with premium ingredients.</p>
+    </div>
+    
+    <div class="container">
+      
+      <div class="category-wrapper">
+        <h2 class="category-title uppercase-text">🍕 Premium Pizzas</h2>
+        <div class="category-content">
+          <div class="menu-list">
+            <div class="menu-item">
+              <div class="item-info"><span class="item-name">Special Crust House Pizza</span></div><div class="item-dots"></div><div class="item-price">Rs 1500</div>
+            </div>
+            <div class="menu-item">
+              <div class="item-info"><span class="item-name">Cheese Stuffer Pizza</span><span class="item-desc">M / L / XL</span></div><div class="item-dots"></div><div class="item-price">1400 / 1900 / 2400</div>
+            </div>
+            <div class="menu-item">
+              <div class="item-info"><span class="item-name">Fajita Pizza</span></div><div class="item-dots"></div><div class="item-price">Rs 1450</div>
+            </div>
+            <div class="menu-item">
+              <div class="item-info"><span class="item-name">Malai Boti Pizza</span><span class="item-desc">M / L / XL</span></div><div class="item-dots"></div><div class="item-price">1200 / 1700 / 2200</div>
+            </div>
+            <div class="menu-item">
+              <div class="item-info"><span class="item-name">Bihari Boti Pizza</span><span class="item-desc">M / L / XL</span></div><div class="item-dots"></div><div class="item-price">1200 / 1700 / 2200</div>
+            </div>
+            <div class="menu-item">
+              <div class="item-info"><span class="item-name">Kabab Stuffer Pizza</span><span class="item-desc">M / L / XL</span></div><div class="item-dots"></div><div class="item-price">1400 / 1900 / 2400</div>
+            </div>
+            <div class="menu-item">
+              <div class="item-info"><span class="item-name">Square Pizza</span><span class="item-desc">S / M / L</span></div><div class="item-dots"></div><div class="item-price">800 / 1400 / 2000</div>
+            </div>
+          </div>
+          <div class="category-image">
+            <img src="crown crust special.jpg" alt="Crown Crust Pizza">
+          </div>
+        </div>
+      </div>
+
+      <div class="category-wrapper">
+        <h2 class="category-title uppercase-text">🍔 Burger Zone</h2>
+        <div class="category-content">
+          <div class="menu-list">
+            <div class="menu-item">
+              <div class="item-info"><span class="item-name">Chicken Patty Burger</span></div><div class="item-dots"></div><div class="item-price">Rs 250</div>
+            </div>
+            <div class="menu-item">
+              <div class="item-info"><span class="item-name">Zinger Burger</span></div><div class="item-dots"></div><div class="item-price">Rs 350</div>
+            </div>
+            <div class="menu-item">
+              <div class="item-info"><span class="item-name">Grill Burger</span></div><div class="item-dots"></div><div class="item-price">Rs 350</div>
+            </div>
+            <div class="menu-item">
+              <div class="item-info"><span class="item-name">Smoked Beef Burger</span></div><div class="item-dots"></div><div class="item-price">Rs 400</div>
+            </div>
+            <div class="menu-item">
+              <div class="item-info"><span class="item-name">Double Decker Burger</span></div><div class="item-dots"></div><div class="item-price">Rs 500</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="category-wrapper">
+        <h2 class="category-title uppercase-text">🍝 Baked Pasta</h2>
+        <div class="category-content">
+          <div class="menu-list">
+            <div class="menu-item">
+              <div class="item-info"><span class="item-name">Fettuccine</span><span class="item-desc">Regular / Large</span></div><div class="item-dots"></div><div class="item-price">450 / 650</div>
+            </div>
+            <div class="menu-item">
+              <div class="item-info"><span class="item-name">Mughlai Pasta</span><span class="item-desc">Regular / Large</span></div><div class="item-dots"></div><div class="item-price">450 / 650</div>
+            </div>
+            <div class="menu-item">
+              <div class="item-info"><span class="item-name">Crust Special Pasta</span><span class="item-desc">Regular / Large</span></div><div class="item-dots"></div><div class="item-price">500 / 700</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="category-wrapper">
+        <h2 class="category-title uppercase-text">🥪 Sandwiches & 🌯 Rolls</h2>
+        <div class="category-content">
+          <div class="menu-list">
+            <div class="menu-item">
+              <div class="item-info"><span class="item-name">Chicken Club Sandwich</span></div><div class="item-dots"></div><div class="item-price">Rs 450</div>
+            </div>
+            <div class="menu-item">
+              <div class="item-info"><span class="item-name">Malai / Mughlai Sandwich</span></div><div class="item-dots"></div><div class="item-price">Rs 450</div>
+            </div>
+            <div class="menu-item">
+              <div class="item-info"><span class="item-name">Crust Sandwich</span></div><div class="item-dots"></div><div class="item-price">Rs 500</div>
+            </div>
+            <div class="menu-item">
+              <div class="item-info"><span class="item-name">Bihari / Fajita / Mughlai Roll</span></div><div class="item-dots"></div><div class="item-price">Rs 250</div>
+            </div>
+            <div class="menu-item">
+              <div class="item-info"><span class="item-name">Peri Peri Roll</span></div><div class="item-dots"></div><div class="item-price">Rs 250</div>
+            </div>
+            <div class="menu-item">
+              <div class="item-info"><span class="item-name">Zinger Roll</span></div><div class="item-dots"></div><div class="item-price">Rs 300</div>
+            </div>
+            <div class="menu-item">
+              <div class="item-info"><span class="item-name">Crust Special Roll</span></div><div class="item-dots"></div><div class="item-price">Rs 350</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="category-wrapper">
+        <h2 class="category-title uppercase-text">🍗 Appetizers & Fried Chicken</h2>
+        <div class="category-content">
+          <div class="menu-list">
+            <div class="menu-item">
+              <div class="item-info"><span class="item-name">Loaded Fries</span></div><div class="item-dots"></div><div class="item-price">Rs 400</div>
+            </div>
+            <div class="menu-item">
+              <div class="item-info"><span class="item-name">BBQ / Oven Baked Wings</span><span class="item-desc">6 Pcs / 10 Pcs</span></div><div class="item-dots"></div><div class="item-price">350 / 550</div>
+            </div>
+            <div class="menu-item">
+              <div class="item-info"><span class="item-name">Peri Peri / Sweet Chilli Wings</span><span class="item-desc">6 Pcs / 10 Pcs</span></div><div class="item-dots"></div><div class="item-price">350 / 550</div>
+            </div>
+            <div class="menu-item">
+              <div class="item-info"><span class="item-name">Fried Wings</span><span class="item-desc">3 Pcs / 5 Pcs</span></div><div class="item-dots"></div><div class="item-price">300 / 450</div>
+            </div>
+            <div class="menu-item">
+              <div class="item-info"><span class="item-name">Chicken Nuggets</span><span class="item-desc">3 Pcs / 5 Pcs</span></div><div class="item-dots"></div><div class="item-price">200 / 350</div>
+            </div>
+            <div class="menu-item">
+              <div class="item-info"><span class="item-name">Hot Shots</span><span class="item-desc">10 Pcs</span></div><div class="item-dots"></div><div class="item-price">Rs 350</div>
+            </div>
+            <div class="menu-item">
+              <div class="item-info"><span class="item-name">Fried Chicken Pc</span><span class="item-desc">1 Pc</span></div><div class="item-dots"></div><div class="item-price">Rs 140</div>
+            </div>
+            <div class="menu-item">
+              <div class="item-info"><span class="item-name">Hot Pocket Chicken</span><span class="item-desc">5 Pcs</span></div><div class="item-dots"></div><div class="item-price">Rs 600</div>
+            </div>
+          </div>
+          <div class="category-image">
+            <img src="chicken wings.jpg" alt="Delicious Chicken Wings">
+          </div>
+        </div>
+      </div>
+
+      <div class="category-wrapper">
+        <h2 class="category-title uppercase-text">🥤 Drinks</h2>
+        <div class="category-content">
+          <div class="menu-list">
+            <div class="menu-item">
+              <div class="item-info"><span class="item-name">Mineral Water</span><span class="item-desc">Small / 1.5 Ltr</span></div><div class="item-dots"></div><div class="item-price">50 / 100</div>
+            </div>
+            <div class="menu-item">
+              <div class="item-info"><span class="item-name">Cold Drink</span><span class="item-desc">300 ML / 500 ML</span></div><div class="item-dots"></div><div class="item-price">60 / 80</div>
+            </div>
+            <div class="menu-item">
+              <div class="item-info"><span class="item-name">Cold Drink</span><span class="item-desc">1 Ltr / 1.5 Ltr</span></div><div class="item-dots"></div><div class="item-price">130 / 160</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <main id="about" class="page-section">
+    <div class="container about-container">
+      <h1 class="about-title">The Crust House Story</h1>
+      
+      <img src="main.jpeg" alt="Crust House Kitchen" class="about-image">
+      
+      <p class="about-text">
+        Welcome to <strong>Crust House</strong>, Barakahu's premier destination for authentic, mouth-watering pizza and fast food. What started as a passion for creating the perfect dough has blossomed into a beloved local staple. 
+      </p>
+      <p class="about-text">
+        We believe that a great pizza starts from the bottom up. That's why our signature dough is prepared fresh daily, rested to perfection, and hand-tossed to order. Whether you are craving our decadent Cheese Stuffer, our unique Square Pizza, or our crispy Grill Burgers, every item on our menu is crafted with top-tier, locally sourced ingredients.
+      </p>
+      <p class="about-text">
+        With hundreds of five-star reviews from our amazing community, our mission remains simple: <em>Delite in Every Bite.</em> We invite you to dine with us, grab a quick takeaway, or let us deliver hot, fresh happiness straight to your door.
+      </p>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <h2 style="font-size: 32px; margin-bottom: 20px; color: #fff; font-family: 'Rokkitt', serif; text-transform: uppercase;">Visit or Order From Us</h2>
+      <div class="contact-info">
+        <p>📍 <strong>Location:</strong> Itehad Center, 1st Floor Shop #2, Main Murree Road, Barakahu</p>
+        <p>📞 <strong>Phone:</strong> 03XX-XXXXXXX &nbsp;|&nbsp; 🕒 <strong>Open Daily</strong></p>
+        <p>🚗 Dine-in &nbsp;&bull;&nbsp; Takeaway &nbsp;&bull;&nbsp; Delivery</p>
+      </div>
+      <a href="https://wa.me/92XXXXXXXXXX" class="wa-btn" target="_blank">Order via WhatsApp</a>
+      <p style="margin-top: 30px; color: #7f8c8d; font-size: 14px;">© 2026 Crust House. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+    function navigate(pageId) {
+      // Hide all pages
+      const pages = document.querySelectorAll('.page-section');
+      pages.forEach(page => {
+        page.classList.remove('active-page');
+      });
+
+      // Show the requested page
+      document.getElementById(pageId).classList.add('active-page');
+
+      // Remove 'active' styling from all navigation links
+      const navLinks = document.querySelectorAll('.nav-link');
+      navLinks.forEach(link => {
+        link.classList.remove('active');
+      });
+
+      // Add 'active' styling to the clicked link
+      document.getElementById('nav-' + pageId).classList.add('active');
+
+      // Scroll back to the top of the page
+      window.scrollTo(0, 0);
+    }
+  </script>
+
+</body>
+</html>
