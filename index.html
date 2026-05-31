@@ -22,6 +22,9 @@
       --bg-card: #ffffff;
       --text-dark: #2c3e50;
       --text-muted: #7f8c8d;
+      --status-pending: #f39c12;
+      --status-delivered: #2ecc71;
+      --status-cancelled: #e74c3c;
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -100,6 +103,26 @@
     .about-container { max-width: 900px; margin: 80px auto; padding: 0 20px; text-align: center; }
     .about-image { width: 100%; height: 400px; object-fit: cover; border-radius: 16px; margin: 40px 0; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
 
+    /* ---------------- NEW ADMIN DASHBOARD STYLE ---------------- */
+    .admin-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 25px; margin-top: 30px; }
+    .order-card { background: #fff; border-radius: 12px; border: 1px solid #e2e8f0; padding: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.03); display: flex; flex-direction: column; justify-content: space-between; }
+    .order-card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid #edf2f7; }
+    .order-email { font-size: 13px; color: var(--text-muted); font-weight: 600; }
+    .status-badge { font-size: 11px; font-weight: bold; text-transform: uppercase; padding: 4px 10px; border-radius: 20px; color: #fff; }
+    .status-pending { background-color: var(--status-pending); }
+    .status-delivered { background-color: var(--status-delivered); }
+    .status-cancelled { background-color: var(--status-cancelled); }
+    
+    .order-details-body { margin-bottom: 15px; }
+    .order-details-body p { font-size: 14px; margin-bottom: 8px; }
+    .order-items-list { background: #f7fafc; padding: 10px 15px; border-radius: 8px; margin: 10px 0; font-size: 14px; }
+    .admin-actions { display: flex; gap: 10px; margin-top: 15px; }
+    .admin-btn { flex: 1; padding: 10px; border: none; border-radius: 6px; font-weight: bold; font-size: 13px; cursor: pointer; text-transform: uppercase; transition: 0.2s; }
+    .btn-deliver { background: #e8f5e9; color: var(--status-delivered); }
+    .btn-deliver:hover { background: var(--status-delivered); color: #fff; }
+    .btn-cancel { background: #ffebee; color: var(--status-cancelled); }
+    .btn-cancel:hover { background: var(--status-cancelled); color: #fff; }
+
     /* ---------------- FLOATING CONTROLS & CART ---------------- */
     .floating-controls { position: fixed; bottom: 30px; right: 30px; display: flex; flex-direction: column; gap: 15px; z-index: 99; }
     .float-btn { width: 55px; height: 55px; border-radius: 50%; background: var(--bright-yellow); border: none; box-shadow: 0 8px 20px rgba(251, 186, 32, 0.4); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.3s; position: relative; }
@@ -129,11 +152,7 @@
     .checkout-btn { width: 100%; background: var(--primary-red); color: #fff; border: none; padding: 15px; font-size: 18px; font-weight: 700; text-transform: uppercase; border-radius: 8px; cursor: pointer; transition: 0.3s; font-family: 'Inter', sans-serif;}
     .checkout-btn:hover { background: #b71c1c; }
 
-    /* Toast Notification */
-    .toast { position: fixed; bottom: -100px; left: 50%; transform: translateX(-50%); background: var(--text-dark); color: #fff; padding: 15px 30px; border-radius: 50px; font-weight: 600; box-shadow: 0 10px 30px rgba(0,0,0,0.2); transition: bottom 0.4s ease; z-index: 9999; }
-    .toast.show { bottom: 30px; }
-
-    /* ---------------- MODALS (Auth, Checkout, Confirmation) ---------------- */
+    /* ---------------- MODALS ---------------- */
     .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); z-index: 1000; align-items: center; justify-content: center; backdrop-filter: blur(5px); }
     .modal-overlay.active { display: flex; }
     .modal-box { background: #fff; width: 100%; max-width: 400px; padding: 40px 30px; border-radius: 16px; position: relative; }
@@ -143,29 +162,12 @@
     
     .form-group { margin-bottom: 15px; }
     .form-group input, .form-group textarea { width: 100%; padding: 12px 15px; border: 1px solid #ddd; border-radius: 8px; font-family: 'Inter', sans-serif; outline: none; transition: 0.3s; }
-    .form-group input:focus, .form-group textarea:focus { border-color: var(--secondary-gold); box-shadow: 0 0 0 3px rgba(245, 176, 65, 0.2); }
-    
     .btn-full { width: 100%; background: var(--primary-red); color: #fff; padding: 12px; border: none; border-radius: 8px; font-weight: 700; font-size: 16px; cursor: pointer; margin-top: 10px; font-family: 'Inter', sans-serif; transition: 0.3s; }
     .btn-full:hover { background: #b71c1c; }
-    
     .modal-footer { text-align: center; margin-top: 20px; font-size: 14px; color: var(--text-muted); }
     .modal-footer span { color: var(--primary-red); font-weight: 600; cursor: pointer; }
 
     footer { background: #2c3e50; color: #fff; text-align: center; padding: 60px 20px; margin-top: auto; }
-
-    @media (max-width: 850px) {
-      .category-content { flex-direction: column; }
-      .category-image { width: 100%; flex: auto; order: -1; margin-bottom: 20px; }
-      .category-image img { max-height: 300px; object-fit: cover; }
-    }
-    @media (max-width: 768px) {
-      nav { flex-direction: column; gap: 15px; }
-      .nav-right { flex-direction: column; gap: 15px; }
-      nav ul { flex-wrap: wrap; justify-content: center; }
-      .menu-item { flex-direction: column; align-items: flex-start; gap: 5px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
-      .item-dots { display: none; }
-      .price-action-wrapper { align-self: flex-start; margin-top: 5px; }
-    }
   </style>
 </head>
 <body>
@@ -175,7 +177,6 @@
   <div class="modal-overlay" id="authModal">
     <div class="modal-box">
       <button class="close-modal" id="closeModalBtn">&times;</button>
-      
       <div id="loginView">
         <h2 class="modal-title">Welcome Back</h2>
         <p class="modal-subtitle">Sign in to sync your orders.</p>
@@ -186,7 +187,6 @@
         </form>
         <p class="modal-footer">Don't have an account? <span id="showRegister">Create one</span></p>
       </div>
-
       <div id="registerView" style="display: none;">
         <h2 class="modal-title">Join Crust House</h2>
         <p class="modal-subtitle">Create an account for faster checkout.</p>
@@ -206,12 +206,8 @@
       <h2 class="modal-title">Delivery Details</h2>
       <p class="modal-subtitle">Where should we send your hot food?</p>
       <form id="checkoutForm">
-        <div class="form-group">
-          <input type="tel" id="customerPhone" placeholder="Phone Number (e.g. 03XX-XXXXXXX)" required>
-        </div>
-        <div class="form-group">
-          <textarea id="deliveryAddress" placeholder="Complete Delivery Address..." rows="3" style="resize: vertical;" required></textarea>
-        </div>
+        <div class="form-group"><input type="tel" id="customerPhone" placeholder="Phone Number (e.g. 03XX-XXXXXXX)" required></div>
+        <div class="form-group"><textarea id="deliveryAddress" placeholder="Complete Delivery Address..." rows="3" required></textarea></div>
         <button type="submit" class="btn-full" id="confirmOrderBtn">Place Order</button>
       </form>
     </div>
@@ -235,10 +231,7 @@
       <p style="text-align: center; color: #999; margin-top: 20px;">Your cart is empty.</p>
     </div>
     <div class="cart-footer">
-      <div class="cart-total">
-        <span>Total:</span>
-        <span id="cartTotalDisplay">Rs 0</span>
-      </div>
+      <div class="cart-total"><span>Total:</span><span id="cartTotalDisplay">Rs 0</span></div>
       <button class="checkout-btn" id="proceedCheckoutBtn">Proceed to Checkout</button>
     </div>
   </div>
@@ -254,6 +247,7 @@
           <li><a class="nav-link active" id="nav-home" onclick="navigate('home')">Home</a></li>
           <li><a class="nav-link" id="nav-menu" onclick="navigate('menu')">Menu</a></li>
           <li><a class="nav-link" id="nav-about" onclick="navigate('about')">About Us</a></li>
+          <li id="adminMenuLink" style="display: none;"><a class="nav-link" id="nav-admin" onclick="navigate('admin')" style="color: var(--secondary-gold);">📋 Kitchen Dashboard</a></li>
         </ul>
         <button class="btn-outline" id="authButton">Sign In</button>
       </div>
@@ -273,38 +267,19 @@
       <div class="container">
         <h2 class="section-title uppercase-text">Why Order From Us?</h2>
         <div class="highlights-grid">
-          <div class="highlight-card">
-            <div class="highlight-icon">🚀</div>
-            <h3>FAST & FREE DELIVERY</h3>
-            <p>Hot, fresh food at your doorstep! We offer free delivery within Barakahu on all orders over Rs 1,000.</p>
-          </div>
-          <div class="highlight-card">
-            <div class="highlight-icon">🥬</div>
-            <h3>FRESH INGREDIENTS</h3>
-            <p>We use only the finest, freshest, and locally sourced ingredients to ensure every bite is a flavor explosion.</p>
-          </div>
-          <div class="highlight-card">
-            <div class="highlight-icon">🕒</div>
-            <h3>OPEN TO ORDERS</h3>
-            <p>Cravings have no schedule! We are open and ready to take your orders from 11 AM to 11 PM every single day.</p>
-          </div>
+          <div class="highlight-card"><div class="highlight-icon">🚀</div><h3>FAST & FREE DELIVERY</h3><p>Hot, fresh food at your doorstep! We offer free delivery within Barakahu on all orders over Rs 1,000.</p></div>
+          <div class="highlight-card"><div class="highlight-icon">🥬</div><h3>FRESH INGREDIENTS</h3><p>We use only the finest, freshest, and locally sourced ingredients to ensure every bite is a flavor explosion.</p></div>
+          <div class="highlight-card"><div class="highlight-icon">🕒</div><h3>OPEN TO ORDERS</h3><p>Cravings have no schedule! We are open and ready to take your orders from 11 AM to 11 PM every single day.</p></div>
         </div>
       </div>
     </section>
   </main>
 
   <main id="menu" class="page-section">
-    <div class="menu-header">
-      <h1>Our Complete Menu</h1>
-      <p>Click the [+] button to add items to your cart.</p>
-    </div>
+    <div class="menu-header"><h1>Our Complete Menu</h1><p>Click the [+] button to add items to your cart.</p></div>
     <div class="container">
-      
       <div class="menu-search-container">
-        <svg viewBox="0 0 24 24">
-          <circle cx="11" cy="11" r="8"></circle>
-          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-        </svg>
+        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
         <input type="text" id="mainMenuSearch" placeholder="Search for items...">
       </div>
 
@@ -312,30 +287,12 @@
         <h2 class="category-title uppercase-text">🍕 Premium Pizzas</h2>
         <div class="category-content">
           <div class="menu-list">
-            <div class="menu-item">
-              <div class="item-info"><span class="item-name">Special Crust House Pizza</span></div><div class="item-dots"></div>
-              <div class="price-action-wrapper"><span class="item-price">Rs 1500</span><button class="add-to-cart-btn" onclick="addToCart('Special Crust Pizza', 1500)">+</button></div>
-            </div>
-            <div class="menu-item">
-              <div class="item-info"><span class="item-name">Cheese Stuffer Pizza</span><span class="item-desc">M / L / XL</span></div><div class="item-dots"></div>
-              <div class="price-action-wrapper"><span class="item-price">Rs 1400</span><button class="add-to-cart-btn" onclick="addToCart('Cheese Stuffer (M)', 1400)">+</button></div>
-            </div>
-            <div class="menu-item">
-              <div class="item-info"><span class="item-name">Fajita Pizza</span></div><div class="item-dots"></div>
-              <div class="price-action-wrapper"><span class="item-price">Rs 1450</span><button class="add-to-cart-btn" onclick="addToCart('Fajita Pizza', 1450)">+</button></div>
-            </div>
-            <div class="menu-item">
-              <div class="item-info"><span class="item-name">Malai Boti Pizza</span><span class="item-desc">M / L / XL</span></div><div class="item-dots"></div>
-              <div class="price-action-wrapper"><span class="item-price">Rs 1200</span><button class="add-to-cart-btn" onclick="addToCart('Malai Boti (M)', 1200)">+</button></div>
-            </div>
-            <div class="menu-item">
-              <div class="item-info"><span class="item-name">Square Pizza</span><span class="item-desc">S / M / L</span></div><div class="item-dots"></div>
-              <div class="price-action-wrapper"><span class="item-price">Rs 800</span><button class="add-to-cart-btn" onclick="addToCart('Square Pizza (S)', 800)">+</button></div>
-            </div>
+            <div class="menu-item"><div class="item-info"><span class="item-name">Special Crust House Pizza</span></div><div class="item-dots"></div><div class="price-action-wrapper"><span class="item-price">Rs 1500</span><button class="add-to-cart-btn" onclick="addToCart('Special Crust Pizza', 1500)">+</button></div></div>
+            <div class="menu-item"><div class="item-info"><span class="item-name">Cheese Stuffer Pizza</span><span class="item-desc">M / L / XL</span></div><div class="item-dots"></div><div class="price-action-wrapper"><span class="item-price">Rs 1400</span><button class="add-to-cart-btn" onclick="addToCart('Cheese Stuffer (M)', 1400)">+</button></div></div>
+            <div class="menu-item"><div class="item-info"><span class="item-name">Fajita Pizza</span></div><div class="item-dots"></div><div class="price-action-wrapper"><span class="item-price">Rs 1450</span><button class="add-to-cart-btn" onclick="addToCart('Fajita Pizza', 1450)">+</button></div></div>
+            <div class="menu-item"><div class="item-info"><span class="item-name">Malai Boti Pizza</span><span class="item-desc">M / L / XL</span></div><div class="item-dots"></div><div class="price-action-wrapper"><span class="item-price">Rs 1200</span><button class="add-to-cart-btn" onclick="addToCart('Malai Boti (M)', 1200)">+</button></div></div>
           </div>
-          <div class="category-image">
-            <img src="crown crust special.jpg" alt="Crown Crust Pizza">
-          </div>
+          <div class="category-image"><img src="crown crust special.jpg" alt="Crown Crust Pizza"></div>
         </div>
       </div>
 
@@ -343,93 +300,12 @@
         <h2 class="category-title uppercase-text">🍔 Burger Zone</h2>
         <div class="category-content">
           <div class="menu-list">
-            <div class="menu-item">
-              <div class="item-info"><span class="item-name">Chicken Patty Burger</span></div><div class="item-dots"></div>
-              <div class="price-action-wrapper"><span class="item-price">Rs 250</span><button class="add-to-cart-btn" onclick="addToCart('Chicken Patty Burger', 250)">+</button></div>
-            </div>
-            <div class="menu-item">
-              <div class="item-info"><span class="item-name">Zinger Burger</span></div><div class="item-dots"></div>
-              <div class="price-action-wrapper"><span class="item-price">Rs 350</span><button class="add-to-cart-btn" onclick="addToCart('Zinger Burger', 350)">+</button></div>
-            </div>
-            <div class="menu-item">
-              <div class="item-info"><span class="item-name">Grill Burger</span></div><div class="item-dots"></div>
-              <div class="price-action-wrapper"><span class="item-price">Rs 350</span><button class="add-to-cart-btn" onclick="addToCart('Grill Burger', 350)">+</button></div>
-            </div>
-            <div class="menu-item">
-              <div class="item-info"><span class="item-name">Double Decker Burger</span></div><div class="item-dots"></div>
-              <div class="price-action-wrapper"><span class="item-price">Rs 500</span><button class="add-to-cart-btn" onclick="addToCart('Double Decker Burger', 500)">+</button></div>
-            </div>
+            <div class="menu-item"><div class="item-info"><span class="item-name">Chicken Patty Burger</span></div><div class="item-dots"></div><div class="price-action-wrapper"><span class="item-price">Rs 250</span><button class="add-to-cart-btn" onclick="addToCart('Chicken Patty Burger', 250)">+</button></div></div>
+            <div class="menu-item"><div class="item-info"><span class="item-name">Zinger Burger</span></div><div class="item-dots"></div><div class="price-action-wrapper"><span class="item-price">Rs 350</span><button class="add-to-cart-btn" onclick="addToCart('Zinger Burger', 350)">+</button></div></div>
+            <div class="menu-item"><div class="item-info"><span class="item-name">Double Decker Burger</span></div><div class="item-dots"></div><div class="price-action-wrapper"><span class="item-price">Rs 500</span><button class="add-to-cart-btn" onclick="addToCart('Double Decker Burger', 500)">+</button></div></div>
           </div>
         </div>
       </div>
-
-      <div class="category-wrapper">
-        <h2 class="category-title uppercase-text">🍝 Pasta & 🥪 Sandwiches</h2>
-        <div class="category-content">
-          <div class="menu-list">
-            <div class="menu-item">
-              <div class="item-info"><span class="item-name">Fettuccine</span></div><div class="item-dots"></div>
-              <div class="price-action-wrapper"><span class="item-price">Rs 450</span><button class="add-to-cart-btn" onclick="addToCart('Fettuccine', 450)">+</button></div>
-            </div>
-            <div class="menu-item">
-              <div class="item-info"><span class="item-name">Crust Special Pasta</span></div><div class="item-dots"></div>
-              <div class="price-action-wrapper"><span class="item-price">Rs 500</span><button class="add-to-cart-btn" onclick="addToCart('Special Pasta', 500)">+</button></div>
-            </div>
-            <div class="menu-item">
-              <div class="item-info"><span class="item-name">Chicken Club Sandwich</span></div><div class="item-dots"></div>
-              <div class="price-action-wrapper"><span class="item-price">Rs 450</span><button class="add-to-cart-btn" onclick="addToCart('Club Sandwich', 450)">+</button></div>
-            </div>
-            <div class="menu-item">
-              <div class="item-info"><span class="item-name">Zinger Roll</span></div><div class="item-dots"></div>
-              <div class="price-action-wrapper"><span class="item-price">Rs 300</span><button class="add-to-cart-btn" onclick="addToCart('Zinger Roll', 300)">+</button></div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="category-wrapper">
-        <h2 class="category-title uppercase-text">🍗 Appetizers & Wings</h2>
-        <div class="category-content">
-          <div class="menu-list">
-            <div class="menu-item">
-              <div class="item-info"><span class="item-name">Loaded Fries</span></div><div class="item-dots"></div>
-              <div class="price-action-wrapper"><span class="item-price">Rs 400</span><button class="add-to-cart-btn" onclick="addToCart('Loaded Fries', 400)">+</button></div>
-            </div>
-            <div class="menu-item">
-              <div class="item-info"><span class="item-name">BBQ Wings</span><span class="item-desc">6 Pcs</span></div><div class="item-dots"></div>
-              <div class="price-action-wrapper"><span class="item-price">Rs 350</span><button class="add-to-cart-btn" onclick="addToCart('BBQ Wings (6 Pcs)', 350)">+</button></div>
-            </div>
-            <div class="menu-item">
-              <div class="item-info"><span class="item-name">Peri Peri Wings</span><span class="item-desc">6 Pcs</span></div><div class="item-dots"></div>
-              <div class="price-action-wrapper"><span class="item-price">Rs 350</span><button class="add-to-cart-btn" onclick="addToCart('Peri Peri Wings (6 Pcs)', 350)">+</button></div>
-            </div>
-            <div class="menu-item">
-              <div class="item-info"><span class="item-name">Chicken Nuggets</span><span class="item-desc">5 Pcs</span></div><div class="item-dots"></div>
-              <div class="price-action-wrapper"><span class="item-price">Rs 350</span><button class="add-to-cart-btn" onclick="addToCart('Chicken Nuggets (5 Pcs)', 350)">+</button></div>
-            </div>
-          </div>
-          <div class="category-image">
-            <img src="chicken wings.jpg" alt="Delicious Chicken Wings">
-          </div>
-        </div>
-      </div>
-      
-      <div class="category-wrapper">
-        <h2 class="category-title uppercase-text">🥤 Drinks</h2>
-        <div class="category-content">
-          <div class="menu-list">
-            <div class="menu-item">
-              <div class="item-info"><span class="item-name">Cold Drink</span><span class="item-desc">500 ML</span></div><div class="item-dots"></div>
-              <div class="price-action-wrapper"><span class="item-price">Rs 80</span><button class="add-to-cart-btn" onclick="addToCart('Cold Drink 500ml', 80)">+</button></div>
-            </div>
-            <div class="menu-item">
-              <div class="item-info"><span class="item-name">Cold Drink</span><span class="item-desc">1.5 Ltr</span></div><div class="item-dots"></div>
-              <div class="price-action-wrapper"><span class="item-price">Rs 160</span><button class="add-to-cart-btn" onclick="addToCart('Cold Drink 1.5L', 160)">+</button></div>
-            </div>
-          </div>
-        </div>
-      </div>
-
     </div>
   </main>
 
@@ -437,8 +313,19 @@
     <div class="container about-container">
       <h1 class="about-title">The Crust House Story</h1>
       <img src="main.jpeg" alt="Crust House Kitchen" class="about-image">
-      <p class="about-text">Welcome to <strong>Crust House</strong>, Barakahu's premier destination for authentic, mouth-watering pizza and fast food. What started as a passion for creating the perfect dough has blossomed into a beloved local staple.</p>
-      <p class="about-text">With hundreds of five-star reviews from our amazing community, our mission remains simple: <em>Delite in Every Bite.</em></p>
+      <p class="about-text">Welcome to <strong>Crust House</strong>, Barakahu's premier destination for authentic, mouth-watering pizza and fast food.</p>
+    </div>
+  </main>
+
+  <main id="admin" class="page-section">
+    <div class="menu-header" style="background: #2c3e50;">
+      <h1>Kitchen Order Panel</h1>
+      <p>Incoming orders stream here live from Firebase.</p>
+    </div>
+    <div class="container">
+      <div class="admin-grid" id="adminOrdersContainer">
+        <p style="text-align: center; grid-column: 1/-1; color: #7f8c8d; margin-top: 40px;">Listening for live incoming orders...</p>
+      </div>
     </div>
   </main>
 
@@ -454,11 +341,8 @@
 
   <footer>
     <div class="container">
-      <h2 style="font-size: 32px; margin-bottom: 20px; color: #fff; font-family: 'Rokkitt', serif; text-transform: uppercase;">Visit or Order From Us</h2>
-      <div class="contact-info">
-        <p>📍 <strong>Location:</strong> Itehad Center, 1st Floor Shop #2, Main Murree Road, Barakahu</p>
-        <p>📞 <strong>Phone:</strong> 03XX-XXXXXXX &nbsp;|&nbsp; 🕒 <strong>Open Daily</strong></p>
-      </div>
+      <h2 style="font-size: 32px; margin-bottom: 20px; color: #fff; text-transform: uppercase;">Visit or Order From Us</h2>
+      <p>📍 Location: Itehad Center, 1st Floor Shop #2, Main Murree Road, Barakahu</p>
       <p style="margin-top: 30px; color: #7f8c8d; font-size: 14px;">© 2026 Crust House. All rights reserved.</p>
     </div>
   </footer>
@@ -466,9 +350,9 @@
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
     import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
-    import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+    import { getFirestore, collection, addDoc, doc, updateDoc, onSnapshot, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
-    // Your actual Firebase keys!
+    // Firebase Configurations
     const firebaseConfig = {
       apiKey: "AIzaSyBz2iocPJ4ty7NQxZ4zSbSsKWeA9C5LWCs",
       authDomain: "fahad-s-project-6ed57.firebaseapp.com",
@@ -482,7 +366,10 @@
     const auth = getAuth(app);
     const db = getFirestore(app);
 
-    // Navigation & UI Helpers
+    // 🔑 STAFF SECURITY: Change this to your exact email address!
+    const ADMIN_EMAIL = "youradmin@email.com";
+
+    // Navigation & UI Logic
     window.navigate = function(pageId) {
       document.querySelectorAll('.page-section').forEach(page => page.classList.remove('active-page'));
       document.getElementById(pageId).classList.add('active-page');
@@ -493,44 +380,38 @@
 
     function showToast(message) {
       const toast = document.getElementById('toast');
-      toast.innerText = message;
-      toast.classList.add('show');
+      toast.innerText = message; toast.classList.add('show');
       setTimeout(() => toast.classList.remove('show'), 3000);
     }
 
-    // Go Top Scroll Logic
+    // Go Top Scroll Button
     const goTopBtn = document.getElementById('goTopBtn');
     window.addEventListener('scroll', () => {
       if (window.scrollY > 300) goTopBtn.classList.add('visible');
       else goTopBtn.classList.remove('visible');
     });
-    goTopBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 
     // Menu Search Logic
     const searchInput = document.getElementById('mainMenuSearch');
     const categoryWrappers = document.querySelectorAll('.category-wrapper');
     searchInput.addEventListener('input', (e) => {
-      const query = e.target.value.toLowerCase();
-      categoryWrappers.forEach(category => {
-        let categoryHasMatch = false;
-        const items = category.querySelectorAll('.menu-item');
-        items.forEach(item => {
-          const itemName = item.querySelector('.item-name').innerText.toLowerCase();
-          if (itemName.includes(query)) {
-            item.style.display = "flex";
-            categoryHasMatch = true;
-          } else {
-            item.style.display = "none";
-          }
+      const q = e.target.value.toLowerCase();
+      categoryWrappers.forEach(cat => {
+        let match = false;
+        cat.querySelectorAll('.menu-item').forEach(item => {
+          const name = item.querySelector('.item-name').innerText.toLowerCase();
+          if (name.includes(q)) { item.style.display = "flex"; match = true; } 
+          else { item.style.display = "none"; }
         });
-        category.style.display = categoryHasMatch ? "block" : "none";
+        cat.style.display = match ? "block" : "none";
       });
     });
 
-    // Authentication Logic
+    // Auth Controls
     const authModal = document.getElementById('authModal');
     const authButton = document.getElementById('authButton');
-    
+    const adminMenuLink = document.getElementById('adminMenuLink');
+
     document.getElementById('openModalBtn')?.addEventListener('click', () => authModal.classList.add('active'));
     document.getElementById('closeModalBtn').addEventListener('click', () => authModal.classList.remove('active'));
     document.getElementById('showRegister').addEventListener('click', () => { document.getElementById('loginView').style.display='none'; document.getElementById('registerView').style.display='block'; });
@@ -541,150 +422,162 @@
       else { authModal.classList.add('active'); }
     });
 
+    // Monitor Auth State & Unlock Dashboard if matching Admin Email
     onAuthStateChanged(auth, (user) => {
-      if (user) { authButton.innerText = "Logout"; authModal.classList.remove('active'); } 
-      else { authButton.innerText = "Sign In / Register"; }
+      if (user) {
+        authButton.innerText = "Logout";
+        authModal.classList.remove('active');
+        if (user.email === ADMIN_EMAIL) {
+          adminMenuLink.style.display = "block"; // Show dashboard tab
+          showToast("Kitchen Admin Mode Unlocked!");
+        } else {
+          adminMenuLink.style.display = "none";
+        }
+      } else {
+        authButton.innerText = "Sign In / Register";
+        adminMenuLink.style.display = "none";
+      }
     });
 
     document.getElementById('registerForm').addEventListener('submit', async (e) => {
       e.preventDefault();
-      const email = document.getElementById('regEmail').value;
-      const pass = document.getElementById('regPassword').value;
-      try {
-        await createUserWithEmailAndPassword(auth, email, pass);
-        showToast("Account created successfully!");
-      } catch (error) { showToast(error.message); }
+      try { await createUserWithEmailAndPassword(auth, document.getElementById('regEmail').value, document.getElementById('regPassword').value); showToast("Account created!"); } 
+      catch (err) { showToast(err.message); }
     });
 
     document.getElementById('loginForm').addEventListener('submit', async (e) => {
       e.preventDefault();
-      const email = document.getElementById('loginEmail').value;
-      const pass = document.getElementById('loginPassword').value;
-      try {
-        await signInWithEmailAndPassword(auth, email, pass);
-        showToast("Welcome back!");
-      } catch (error) { showToast("Invalid credentials"); }
+      try { await signInWithEmailAndPassword(auth, document.getElementById('loginEmail').value, document.getElementById('loginPassword').value); showToast("Welcome back!"); } 
+      catch (err) { showToast("Invalid credentials"); }
     });
 
-    // Shopping Cart Logic
+    // Customer Shopping Cart Logic
     let cart = [];
-
-    window.addToCart = function(name, price) {
-      cart.push({ name, price });
-      updateCartUI();
-      showToast(name + " added to cart!");
-    }
-
+    window.addToCart = function(name, price) { cart.push({ name, price }); updateCartUI(); showToast(name + " added!"); }
+    
     function updateCartUI() {
       const container = document.getElementById('cartItemsContainer');
-      const totalDisplay = document.getElementById('cartTotalDisplay');
       const badge = document.getElementById('cartBadge');
-      
       badge.innerText = cart.length;
-      
-      if (cart.length === 0) {
-        container.innerHTML = '<p style="text-align:center; color:#999; margin-top:20px;">Your cart is empty.</p>';
-        totalDisplay.innerText = "Rs 0";
-        return;
-      }
-
-      let html = '';
-      let total = 0;
-      cart.forEach((item, index) => {
-        total += item.price;
-        html += `
-          <div class="cart-item">
-            <div>
-              <div class="cart-item-title">${item.name}</div>
-              <div class="cart-item-price">Rs ${item.price}</div>
-            </div>
-            <button class="remove-item" onclick="removeFromCart(${index})">X</button>
-          </div>
-        `;
-      });
-      container.innerHTML = html;
-      totalDisplay.innerText = `Rs ${total}`;
+      if (cart.length === 0) { container.innerHTML = '<p style="text-align:center; color:#999; margin-top:20px;">Your cart is empty.</p>'; document.getElementById('cartTotalDisplay').innerText = "Rs 0"; return; }
+      let html = '', total = 0;
+      cart.forEach((item, index) => { total += item.price; html += `<div class="cart-item"><div><div class="cart-item-title">${item.name}</div><div class="cart-item-price">Rs ${item.price}</div></div><button class="remove-item" onclick="removeFromCart(${index})">X</button></div>`; });
+      container.innerHTML = html; document.getElementById('cartTotalDisplay').innerText = `Rs ${total}`;
     }
-
-    window.removeFromCart = function(index) {
-      cart.splice(index, 1);
-      updateCartUI();
-    }
+    window.removeFromCart = function(index) { cart.splice(index, 1); updateCartUI(); }
 
     const cartSidebar = document.getElementById('cartSidebar');
     document.getElementById('openCartFloatBtn').addEventListener('click', () => cartSidebar.classList.add('open'));
     document.getElementById('closeCartBtn').addEventListener('click', () => cartSidebar.classList.remove('open'));
 
-    // NEW CHECKOUT FLOW
+    // Customer Checkout Triggers
     const checkoutModal = document.getElementById('checkoutModal');
     const confirmationModal = document.getElementById('confirmationModal');
-
     document.getElementById('closeCheckoutBtn').addEventListener('click', () => checkoutModal.classList.remove('active'));
-    document.getElementById('closeConfirmationBtn').addEventListener('click', () => {
-      confirmationModal.classList.remove('active');
-      navigate('menu');
-    });
+    document.getElementById('closeConfirmationBtn').addEventListener('click', () => { confirmationModal.classList.remove('active'); navigate('menu'); });
 
-    // 1. Proceed to Checkout Button
     document.getElementById('proceedCheckoutBtn').addEventListener('click', () => {
       if (cart.length === 0) return showToast("Your cart is empty!");
-      
-      if (!auth.currentUser) {
-        showToast("Please Sign In to checkout!");
-        cartSidebar.classList.remove('open');
-        authModal.classList.add('active');
-        return;
-      }
-
-      // If logged in and cart has items, open Delivery Details Modal
-      cartSidebar.classList.remove('open');
-      checkoutModal.classList.add('active');
+      if (!auth.currentUser) { cartSidebar.classList.remove('open'); authModal.classList.add('active'); return showToast("Sign in first!"); }
+      cartSidebar.classList.remove('open'); checkoutModal.classList.add('active');
     });
 
-    // 2. Final Submit Order Button
     document.getElementById('checkoutForm').addEventListener('submit', async (e) => {
       e.preventDefault();
-      
-      const phone = document.getElementById('customerPhone').value;
-      const address = document.getElementById('deliveryAddress').value;
-
       document.getElementById('confirmOrderBtn').innerText = "Processing...";
-
       try {
         const orderData = {
           userId: auth.currentUser.uid,
           userEmail: auth.currentUser.email,
-          customerPhone: phone,
-          deliveryAddress: address,
+          customerPhone: document.getElementById('customerPhone').value,
+          deliveryAddress: document.getElementById('deliveryAddress').value,
           items: cart,
           totalPrice: cart.reduce((sum, item) => sum + item.price, 0),
           status: "Pending",
           timestamp: serverTimestamp()
         };
-
-        // Save to Firebase
         await addDoc(collection(db, "orders"), orderData);
-        
-        // Success cleanup
-        cart = [];
-        document.getElementById('customerPhone').value = '';
-        document.getElementById('deliveryAddress').value = '';
-        updateCartUI();
-        
-        document.getElementById('confirmOrderBtn').innerText = "Place Order";
-        checkoutModal.classList.remove('active');
-        
-        // Show Confirmation
-        confirmationModal.classList.add('active');
-        
-      } catch (e) {
-        console.error(e);
-        document.getElementById('confirmOrderBtn').innerText = "Place Order";
-        showToast("Error connecting to database.");
+        cart = []; document.getElementById('customerPhone').value = ''; document.getElementById('deliveryAddress').value = ''; updateCartUI();
+        document.getElementById('confirmOrderBtn').innerText = "Place Order"; checkoutModal.classList.remove('active'); confirmationModal.classList.add('active');
+      } catch (err) { showToast("Error processing database save."); }
+    });
+
+    /* ==================================================
+       REALTIME ADMIN PANEL KITCHEN STREAM
+       ================================================== */
+    const adminOrdersContainer = document.getElementById('adminOrdersContainer');
+
+    // Create a query that orders all active submissions by time created
+    const ordersQuery = query(collection(db, "orders"), orderBy("timestamp", "desc"));
+
+    // Realtime Snapshot Stream Listener
+    onSnapshot(ordersQuery, (snapshot) => {
+      // Guard Check: Only render if user is logged into an authorized Admin profile
+      if (!auth.currentUser || auth.currentUser.email !== ADMIN_EMAIL) return;
+
+      if (snapshot.empty) {
+        adminOrdersContainer.innerHTML = '<p style="text-align: center; grid-column: 1/-1; color: #7f8c8d; margin-top: 40px;">No orders logged in system.</p>';
+        return;
       }
+
+      let cardsHtml = '';
+      snapshot.forEach((docSnap) => {
+        const order = docSnap.data();
+        const orderId = docSnap.id;
+        
+        // Format Items list string safely
+        let itemsSummary = '';
+        if (order.items) {
+          order.items.forEach(i => { itemsSummary += `• ${i.name} (Rs ${i.price})<br>`; });
+        }
+
+        cardsHtml += `
+          <div class="order-card">
+            <div>
+              <div class="order-card-header">
+                <span class="order-email">${order.userEmail}</span>
+                <span class="status-badge status-${order.status.toLowerCase()}">${order.status}</span>
+              </div>
+              <div class="order-details-body">
+                <p>📞 <strong>Phone:</strong> ${order.customerPhone || 'N/A'}</p>
+                <p>📍 <strong>Address:</strong> ${order.deliveryAddress || 'N/A'}</p>
+                <div class="order-items-list">
+                  <strong>Items Ordered:</strong><br>${itemsSummary}
+                </div>
+                <p style="font-size:18px; color:var(--primary-red); font-weight:bold;">Total: Rs ${order.totalPrice}</p>
+              </div>
+            </div>
+            
+            ${order.status === "Pending" ? `
+              <div class="admin-actions">
+                <button class="admin-btn btn-deliver" data-id="${orderId}">✔ Deliver</button>
+                <button class="admin-btn btn-cancel" data-id="${orderId}">✖ Cancel</button>
+              </div>
+            ` : ''}
+          </div>
+        `;
+      });
+
+      adminOrdersContainer.innerHTML = cardsHtml;
+
+      // Event Listeners for Dynamic Admin Control Actions
+      document.querySelectorAll('.btn-deliver').forEach(btn => {
+        btn.addEventListener('click', async (e) => {
+          const docId = e.target.getAttribute('data-id');
+          await updateDoc(doc(db, "orders", docId), { status: "Delivered" });
+          showToast("Order marked as Delivered!");
+        });
+      });
+
+      document.querySelectorAll('.btn-cancel').forEach(btn => {
+        btn.addEventListener('click', async (e) => {
+          const docId = e.target.getAttribute('data-id');
+          await updateDoc(doc(db, "orders", docId), { status: "Cancelled" });
+          showToast("Order marked as Cancelled.");
+        });
+      });
     });
 
   </script>
-
 </body>
 </html>
