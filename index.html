@@ -80,6 +80,7 @@
     .menu-search-container { display: flex; align-items: center; border-bottom: 1px solid #d1d8dd; padding: 10px 0; margin: 20px auto 40px; max-width: 100%; }
     .menu-search-container svg { width: 24px; height: 24px; stroke: var(--bright-yellow); stroke-width: 2.5; fill: none; margin-right: 15px; }
     .menu-search-container input { flex: 1; border: none; outline: none; font-size: 18px; font-family: 'Inter', sans-serif; background: transparent; color: var(--text-dark); }
+    .menu-search-container input::placeholder { color: #e0b868; opacity: 0.8; }
 
     /* Menu List */
     .menu-header { background: var(--primary-red); color: #fff; text-align: center; padding: 40px 20px; margin-bottom: 30px; }
@@ -132,8 +133,8 @@
     #goTopBtn { opacity: 0; pointer-events: none; transform: translateY(20px); }
     #goTopBtn.visible { opacity: 1; pointer-events: auto; transform: translateY(0); }
 
-    /* Cart Sidebar */
-    .cart-sidebar { position: fixed; top: 0; right: -100vw; width: 450px; max-width: 100vw; height: 100vh; background: #fff; box-shadow: -5px 0 30px rgba(0,0,0,0.2); z-index: 200; transition: right 0.3s ease-in-out; display: flex; flex-direction: column; }
+    /* Cart Sidebar (MOBILE OPTIMIZED HEIGHT) */
+    .cart-sidebar { position: fixed; top: 0; right: -100vw; width: 450px; max-width: 100vw; height: 100dvh; background: #fff; box-shadow: -5px 0 30px rgba(0,0,0,0.2); z-index: 200; transition: right 0.3s ease-in-out; display: flex; flex-direction: column; }
     .cart-sidebar.open { right: 0; }
     .cart-header { padding: 20px; background: var(--primary-red); color: #fff; display: flex; justify-content: space-between; align-items: center; }
     .cart-header h2 { font-size: 24px; margin: 0; font-family: 'Rokkitt', serif; text-transform: uppercase;}
@@ -147,14 +148,15 @@
     .cart-item-price { color: var(--primary-red); font-weight: 600; font-size: 15px;}
     .remove-item { background: #ffebee; color: var(--primary-red); border: none; width: 32px; height: 32px; border-radius: 6px; cursor: pointer; font-size: 14px; font-weight: bold; display: flex; align-items: center; justify-content: center;}
     
-    .cart-footer { padding: 20px; border-top: 1px solid #eee; background: #fafafa; padding-bottom: max(20px, env(safe-area-inset-bottom)); }
+    /* Cart Footer (Mobile Safe Area Fix) */
+    .cart-footer { padding: 20px; border-top: 1px solid #eee; background: #fafafa; padding-bottom: calc(20px + env(safe-area-inset-bottom)); }
     .cart-total { display: flex; justify-content: space-between; font-size: 22px; font-weight: 900; color: var(--text-dark); margin-bottom: 15px; }
     .checkout-btn { width: 100%; background: var(--primary-red); color: #fff; border: none; padding: 16px; font-size: 16px; font-weight: 700; text-transform: uppercase; border-radius: 8px; cursor: pointer; transition: 0.3s; font-family: 'Inter', sans-serif;}
 
     /* ---------------- MODALS ---------------- */
-    .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); z-index: 1000; align-items: center; justify-content: center; backdrop-filter: blur(5px); }
+    .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100dvh; background: rgba(0, 0, 0, 0.7); z-index: 1000; align-items: center; justify-content: center; backdrop-filter: blur(5px); }
     .modal-overlay.active { display: flex; }
-    .modal-box { background: #fff; width: 92%; max-width: 400px; padding: 30px 25px; border-radius: 16px; position: relative; max-height: 90vh; overflow-y: auto;}
+    .modal-box { background: #fff; width: 92%; max-width: 400px; padding: 30px 25px; border-radius: 16px; position: relative; max-height: 90dvh; overflow-y: auto;}
     
     .modal-box .close-modal { position: absolute; top: 15px; right: 15px; color: var(--text-dark); background: #f1f5f9; }
     
@@ -168,6 +170,12 @@
     .btn-full { width: 100%; background: var(--primary-red); color: #fff; padding: 14px; border: none; border-radius: 8px; font-weight: 700; font-size: 16px; cursor: pointer; margin-top: 10px; font-family: 'Inter', sans-serif;}
     .modal-footer { text-align: center; margin-top: 20px; font-size: 14px; color: var(--text-muted); }
     .modal-footer span { color: var(--primary-red); font-weight: 600; cursor: pointer; padding: 5px;}
+
+    /* Options Selection Modal Buttons */
+    .option-btn { width: 100%; background: transparent; border: 2px solid var(--secondary-gold); color: var(--text-dark); padding: 14px; border-radius: 8px; font-family: 'Inter', sans-serif; font-size: 16px; cursor: pointer; transition: 0.2s; display: flex; justify-content: space-between; align-items: center; }
+    .option-btn:hover { background: var(--secondary-gold); color: #fff; }
+    .option-btn strong { color: var(--primary-red); }
+    .option-btn:hover strong { color: #fff; }
 
     footer { background: #2c3e50; color: #fff; text-align: center; padding: 50px 20px; margin-top: auto; }
 
@@ -183,9 +191,8 @@
     }
     
     @media (max-width: 768px) {
-      /* Hamburger Menu Setup */
       .menu-toggle { display: block; }
-      .nav-right { flex-direction: column; position: fixed; top: 0; left: -100%; width: 280px; height: 100vh; background: #fff; align-items: flex-start; padding: 25px; box-shadow: 5px 0 25px rgba(0,0,0,0.1); transition: 0.3s ease; z-index: 1000; justify-content: flex-start; gap: 30px;}
+      .nav-right { flex-direction: column; position: fixed; top: 0; left: -100%; width: 280px; height: 100dvh; background: #fff; align-items: flex-start; padding: 25px; box-shadow: 5px 0 25px rgba(0,0,0,0.1); transition: 0.3s ease; z-index: 1000; justify-content: flex-start; gap: 30px;}
       .nav-right.open { left: 0; }
       .close-nav { display: flex; }
       
@@ -194,7 +201,6 @@
       .nav-links li a { display: block; font-size: 18px; padding: 10px 0; }
       .btn-outline { width: 100%; text-align: center; padding: 12px; }
       
-      /* Menu Items Compact */
       .menu-item { flex-direction: column; align-items: flex-start; padding-bottom: 15px; border-bottom: 1px solid #f1f1f1; margin-bottom: 15px;}
       .item-info { padding-right: 0; margin-bottom: 8px;}
       .item-dots { display: none; }
@@ -208,6 +214,16 @@
 <body>
 
   <div id="toast" class="toast">Action successful!</div>
+
+  <div class="modal-overlay" id="optionsModal">
+    <div class="modal-box">
+      <button class="close-modal" id="closeOptionsBtn">&times;</button>
+      <h2 class="modal-title" id="optionsItemName">Item Name</h2>
+      <p class="modal-subtitle">Choose your size or variation</p>
+      <div id="optionsContainer" style="display: flex; flex-direction: column; gap: 12px;">
+        </div>
+    </div>
+  </div>
 
   <div class="modal-overlay" id="authModal">
     <div class="modal-box">
@@ -317,7 +333,7 @@
   </main>
 
   <main id="menu" class="page-section">
-    <div class="menu-header"><h1>Our Complete Menu</h1><p>Click the [+] button to add items to your cart.</p></div>
+    <div class="menu-header"><h1>Our Complete Menu</h1><p>Click the [+] button to customize and add items to your cart.</p></div>
     <div class="container">
       <div class="menu-search-container">
         <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
@@ -329,9 +345,13 @@
         <div class="category-content">
           <div class="menu-list">
             <div class="menu-item"><div class="item-info"><span class="item-name">Special Crust House Pizza</span></div><div class="item-dots"></div><div class="price-action-wrapper"><span class="item-price">Rs 1500</span><button class="add-to-cart-btn" onclick="addToCart('Special Crust Pizza', 1500)">+</button></div></div>
-            <div class="menu-item"><div class="item-info"><span class="item-name">Cheese Stuffer Pizza</span><span class="item-desc">M / L / XL</span></div><div class="item-dots"></div><div class="price-action-wrapper"><span class="item-price">Rs 1400</span><button class="add-to-cart-btn" onclick="addToCart('Cheese Stuffer (M)', 1400)">+</button></div></div>
             <div class="menu-item"><div class="item-info"><span class="item-name">Fajita Pizza</span></div><div class="item-dots"></div><div class="price-action-wrapper"><span class="item-price">Rs 1450</span><button class="add-to-cart-btn" onclick="addToCart('Fajita Pizza', 1450)">+</button></div></div>
-            <div class="menu-item"><div class="item-info"><span class="item-name">Malai Boti Pizza</span><span class="item-desc">M / L / XL</span></div><div class="item-dots"></div><div class="price-action-wrapper"><span class="item-price">Rs 1200</span><button class="add-to-cart-btn" onclick="addToCart('Malai Boti (M)', 1200)">+</button></div></div>
+            
+            <div class="menu-item"><div class="item-info"><span class="item-name">Cheese Stuffer Pizza</span><span class="item-desc">M / L / XL</span></div><div class="item-dots"></div><div class="price-action-wrapper"><span class="item-price">1400+</span><button class="add-to-cart-btn" onclick="showOptions('Cheese Stuffer Pizza', 'Medium,1400|Large,1900|Extra Large,2400')">+</button></div></div>
+            <div class="menu-item"><div class="item-info"><span class="item-name">Malai Boti Pizza</span><span class="item-desc">M / L / XL</span></div><div class="item-dots"></div><div class="price-action-wrapper"><span class="item-price">1200+</span><button class="add-to-cart-btn" onclick="showOptions('Malai Boti Pizza', 'Medium,1200|Large,1700|Extra Large,2200')">+</button></div></div>
+            <div class="menu-item"><div class="item-info"><span class="item-name">Bihari Boti Pizza</span><span class="item-desc">M / L / XL</span></div><div class="item-dots"></div><div class="price-action-wrapper"><span class="item-price">1200+</span><button class="add-to-cart-btn" onclick="showOptions('Bihari Boti Pizza', 'Medium,1200|Large,1700|Extra Large,2200')">+</button></div></div>
+            <div class="menu-item"><div class="item-info"><span class="item-name">Kabab Stuffer Pizza</span><span class="item-desc">M / L / XL</span></div><div class="item-dots"></div><div class="price-action-wrapper"><span class="item-price">1400+</span><button class="add-to-cart-btn" onclick="showOptions('Kabab Stuffer Pizza', 'Medium,1400|Large,1900|Extra Large,2400')">+</button></div></div>
+            <div class="menu-item"><div class="item-info"><span class="item-name">Square Pizza</span><span class="item-desc">S / M / L</span></div><div class="item-dots"></div><div class="price-action-wrapper"><span class="item-price">800+</span><button class="add-to-cart-btn" onclick="showOptions('Square Pizza', 'Small,800|Medium,1400|Large,2000')">+</button></div></div>
           </div>
           <div class="category-image"><img src="crown crust special.jpg" alt="Crown Crust Pizza"></div>
         </div>
@@ -343,10 +363,71 @@
           <div class="menu-list">
             <div class="menu-item"><div class="item-info"><span class="item-name">Chicken Patty Burger</span></div><div class="item-dots"></div><div class="price-action-wrapper"><span class="item-price">Rs 250</span><button class="add-to-cart-btn" onclick="addToCart('Chicken Patty Burger', 250)">+</button></div></div>
             <div class="menu-item"><div class="item-info"><span class="item-name">Zinger Burger</span></div><div class="item-dots"></div><div class="price-action-wrapper"><span class="item-price">Rs 350</span><button class="add-to-cart-btn" onclick="addToCart('Zinger Burger', 350)">+</button></div></div>
+            <div class="menu-item"><div class="item-info"><span class="item-name">Grill Burger</span></div><div class="item-dots"></div><div class="price-action-wrapper"><span class="item-price">Rs 350</span><button class="add-to-cart-btn" onclick="addToCart('Grill Burger', 350)">+</button></div></div>
+            <div class="menu-item"><div class="item-info"><span class="item-name">Smoked Beef Burger</span></div><div class="item-dots"></div><div class="price-action-wrapper"><span class="item-price">Rs 400</span><button class="add-to-cart-btn" onclick="addToCart('Smoked Beef Burger', 400)">+</button></div></div>
             <div class="menu-item"><div class="item-info"><span class="item-name">Double Decker Burger</span></div><div class="item-dots"></div><div class="price-action-wrapper"><span class="item-price">Rs 500</span><button class="add-to-cart-btn" onclick="addToCart('Double Decker Burger', 500)">+</button></div></div>
           </div>
         </div>
       </div>
+
+      <div class="category-wrapper">
+        <h2 class="category-title uppercase-text">🍝 Baked Pasta</h2>
+        <div class="category-content">
+          <div class="menu-list">
+            <div class="menu-item"><div class="item-info"><span class="item-name">Fettuccine Pasta</span><span class="item-desc">Regular / Large</span></div><div class="item-dots"></div><div class="price-action-wrapper"><span class="item-price">450+</span><button class="add-to-cart-btn" onclick="showOptions('Fettuccine Pasta', 'Regular,450|Large,650')">+</button></div></div>
+            <div class="menu-item"><div class="item-info"><span class="item-name">Mughlai Pasta</span><span class="item-desc">Regular / Large</span></div><div class="item-dots"></div><div class="price-action-wrapper"><span class="item-price">450+</span><button class="add-to-cart-btn" onclick="showOptions('Mughlai Pasta', 'Regular,450|Large,650')">+</button></div></div>
+            <div class="menu-item"><div class="item-info"><span class="item-name">Crust Special Pasta</span><span class="item-desc">Regular / Large</span></div><div class="item-dots"></div><div class="price-action-wrapper"><span class="item-price">500+</span><button class="add-to-cart-btn" onclick="showOptions('Crust Special Pasta', 'Regular,500|Large,700')">+</button></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="category-wrapper">
+        <h2 class="category-title uppercase-text">🥪 Sandwiches & 🌯 Rolls</h2>
+        <div class="category-content">
+          <div class="menu-list">
+            <div class="menu-item"><div class="item-info"><span class="item-name">Chicken Club Sandwich</span></div><div class="item-dots"></div><div class="price-action-wrapper"><span class="item-price">Rs 450</span><button class="add-to-cart-btn" onclick="addToCart('Club Sandwich', 450)">+</button></div></div>
+            <div class="menu-item"><div class="item-info"><span class="item-name">Malai / Mughlai Sandwich</span></div><div class="item-dots"></div><div class="price-action-wrapper"><span class="item-price">Rs 450</span><button class="add-to-cart-btn" onclick="addToCart('Malai/Mughlai Sandwich', 450)">+</button></div></div>
+            <div class="menu-item"><div class="item-info"><span class="item-name">Crust Sandwich</span></div><div class="item-dots"></div><div class="price-action-wrapper"><span class="item-price">Rs 500</span><button class="add-to-cart-btn" onclick="addToCart('Crust Sandwich', 500)">+</button></div></div>
+            
+            <div class="menu-item"><div class="item-info"><span class="item-name">Bihari / Fajita / Mughlai Roll</span></div><div class="item-dots"></div><div class="price-action-wrapper"><span class="item-price">Rs 250</span><button class="add-to-cart-btn" onclick="showOptions('Roll', 'Bihari,250|Fajita,250|Mughlai,250')">+</button></div></div>
+            <div class="menu-item"><div class="item-info"><span class="item-name">Peri Peri Roll</span></div><div class="item-dots"></div><div class="price-action-wrapper"><span class="item-price">Rs 250</span><button class="add-to-cart-btn" onclick="addToCart('Peri Peri Roll', 250)">+</button></div></div>
+            <div class="menu-item"><div class="item-info"><span class="item-name">Zinger Roll</span></div><div class="item-dots"></div><div class="price-action-wrapper"><span class="item-price">Rs 300</span><button class="add-to-cart-btn" onclick="addToCart('Zinger Roll', 300)">+</button></div></div>
+            <div class="menu-item"><div class="item-info"><span class="item-name">Crust Special Roll</span></div><div class="item-dots"></div><div class="price-action-wrapper"><span class="item-price">Rs 350</span><button class="add-to-cart-btn" onclick="addToCart('Crust Special Roll', 350)">+</button></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="category-wrapper">
+        <h2 class="category-title uppercase-text">🍗 Appetizers & Wings</h2>
+        <div class="category-content">
+          <div class="menu-list">
+            <div class="menu-item"><div class="item-info"><span class="item-name">Loaded Fries</span></div><div class="item-dots"></div><div class="price-action-wrapper"><span class="item-price">Rs 400</span><button class="add-to-cart-btn" onclick="addToCart('Loaded Fries', 400)">+</button></div></div>
+            <div class="menu-item"><div class="item-info"><span class="item-name">Hot Shots</span><span class="item-desc">10 Pcs</span></div><div class="item-dots"></div><div class="price-action-wrapper"><span class="item-price">Rs 350</span><button class="add-to-cart-btn" onclick="addToCart('Hot Shots (10)', 350)">+</button></div></div>
+            <div class="menu-item"><div class="item-info"><span class="item-name">Fried Chicken Pc</span><span class="item-desc">1 Pc</span></div><div class="item-dots"></div><div class="price-action-wrapper"><span class="item-price">Rs 140</span><button class="add-to-cart-btn" onclick="addToCart('Fried Chicken (1pc)', 140)">+</button></div></div>
+            <div class="menu-item"><div class="item-info"><span class="item-name">Hot Pocket Chicken</span><span class="item-desc">5 Pcs</span></div><div class="item-dots"></div><div class="price-action-wrapper"><span class="item-price">Rs 600</span><button class="add-to-cart-btn" onclick="addToCart('Hot Pocket Chicken (5)', 600)">+</button></div></div>
+            
+            <div class="menu-item"><div class="item-info"><span class="item-name">BBQ / Oven Baked Wings</span><span class="item-desc">6 Pcs / 10 Pcs</span></div><div class="item-dots"></div><div class="price-action-wrapper"><span class="item-price">350+</span><button class="add-to-cart-btn" onclick="showOptions('BBQ / Oven Baked Wings', '6 Pcs,350|10 Pcs,550')">+</button></div></div>
+            <div class="menu-item"><div class="item-info"><span class="item-name">Peri Peri / Sweet Chilli Wings</span><span class="item-desc">6 Pcs / 10 Pcs</span></div><div class="item-dots"></div><div class="price-action-wrapper"><span class="item-price">350+</span><button class="add-to-cart-btn" onclick="showOptions('Peri/Sweet Chilli Wings', '6 Pcs,350|10 Pcs,550')">+</button></div></div>
+            <div class="menu-item"><div class="item-info"><span class="item-name">Fried Wings</span><span class="item-desc">3 Pcs / 5 Pcs</span></div><div class="item-dots"></div><div class="price-action-wrapper"><span class="item-price">300+</span><button class="add-to-cart-btn" onclick="showOptions('Fried Wings', '3 Pcs,300|5 Pcs,450')">+</button></div></div>
+            <div class="menu-item"><div class="item-info"><span class="item-name">Chicken Nuggets</span><span class="item-desc">3 Pcs / 5 Pcs</span></div><div class="item-dots"></div><div class="price-action-wrapper"><span class="item-price">200+</span><button class="add-to-cart-btn" onclick="showOptions('Chicken Nuggets', '3 Pcs,200|5 Pcs,350')">+</button></div></div>
+          </div>
+          <div class="category-image">
+            <img src="chicken wings.jpg" alt="Delicious Chicken Wings">
+          </div>
+        </div>
+      </div>
+      
+      <div class="category-wrapper">
+        <h2 class="category-title uppercase-text">🥤 Drinks</h2>
+        <div class="category-content">
+          <div class="menu-list">
+            <div class="menu-item"><div class="item-info"><span class="item-name">Mineral Water</span><span class="item-desc">Small / 1.5 Ltr</span></div><div class="item-dots"></div><div class="price-action-wrapper"><span class="item-price">50+</span><button class="add-to-cart-btn" onclick="showOptions('Mineral Water', 'Small,50|1.5 Ltr,100')">+</button></div></div>
+            <div class="menu-item"><div class="item-info"><span class="item-name">Cold Drink</span><span class="item-desc">300 ML / 500 ML</span></div><div class="item-dots"></div><div class="price-action-wrapper"><span class="item-price">60+</span><button class="add-to-cart-btn" onclick="showOptions('Cold Drink', '300 ML,60|500 ML,80')">+</button></div></div>
+            <div class="menu-item"><div class="item-info"><span class="item-name">Cold Drink (Large)</span><span class="item-desc">1 Ltr / 1.5 Ltr</span></div><div class="item-dots"></div><div class="price-action-wrapper"><span class="item-price">130+</span><button class="add-to-cart-btn" onclick="showOptions('Cold Drink', '1 Ltr,130|1.5 Ltr,160')">+</button></div></div>
+          </div>
+        </div>
+      </div>
+
     </div>
   </main>
 
@@ -431,7 +512,7 @@
       document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
       document.getElementById('nav-' + pageId).classList.add('active');
       window.scrollTo({ top: 0, behavior: 'smooth' });
-      toggleMobileMenu(true); // Close mobile menu after clicking link
+      toggleMobileMenu(true);
     }
 
     function showToast(message) {
@@ -505,6 +586,36 @@
       try { await signInWithEmailAndPassword(auth, document.getElementById('loginEmail').value, document.getElementById('loginPassword').value); showToast("Welcome back!"); } 
       catch (err) { showToast("Invalid credentials"); }
     });
+
+    // NEW: Options Selection Modal Logic
+    const optionsModal = document.getElementById('optionsModal');
+    document.getElementById('closeOptionsBtn').addEventListener('click', () => toggleModal(optionsModal, false));
+
+    window.showOptions = function(itemName, optionsString) {
+      document.getElementById('optionsItemName').innerText = itemName;
+      const container = document.getElementById('optionsContainer');
+      container.innerHTML = ''; // Clear previous options
+      
+      // optionsString format expected: "Medium,1400|Large,1900|Extra Large,2400"
+      const optionsArray = optionsString.split('|');
+      
+      optionsArray.forEach(opt => {
+        const [sizeName, priceStr] = opt.split(',');
+        const price = parseInt(priceStr);
+        
+        const btn = document.createElement('button');
+        btn.className = 'option-btn';
+        btn.innerHTML = `<span>${sizeName}</span> <strong>Rs ${price}</strong>`;
+        
+        btn.onclick = () => {
+          addToCart(`${itemName} (${sizeName})`, price);
+          toggleModal(optionsModal, false);
+        };
+        container.appendChild(btn);
+      });
+      
+      toggleModal(optionsModal, true);
+    }
 
     // Customer Shopping Cart Logic
     let cart = [];
