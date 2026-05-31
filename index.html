@@ -42,17 +42,13 @@
     .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
     section { padding: 80px 0; }
     .section-title { 
-      text-align: center; 
-      font-size: 48px; 
-      margin-bottom: 50px; 
-      color: var(--primary-red);
-      font-weight: 900;
+      text-align: center; font-size: 48px; margin-bottom: 50px; 
+      color: var(--primary-red); font-weight: 900;
     }
 
-    /* Navigation */
+    /* ---------------- NAVIGATION ---------------- */
     header { 
-      background: #ffffff; 
-      position: sticky; top: 0; z-index: 100; 
+      background: #ffffff; position: sticky; top: 0; z-index: 100; 
       box-shadow: 0 4px 15px rgba(0,0,0,0.05);
     }
     nav { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; max-width: 1200px; margin: 0 auto; }
@@ -61,63 +57,87 @@
     .logo-img { height: 50px; width: auto; }
     .brand { font-size: 32px; font-weight: 900; color: var(--primary-red); text-transform: uppercase; }
     
+    .nav-right { display: flex; align-items: center; gap: 30px; }
     nav ul { list-style: none; display: flex; gap: 30px; }
     nav ul li a { 
-      color: var(--text-dark); 
-      text-decoration: none; 
-      font-weight: 600; 
-      font-size: 15px; 
-      text-transform: uppercase; 
-      transition: 0.3s;
-      cursor: pointer;
-      padding-bottom: 5px;
+      color: var(--text-dark); text-decoration: none; font-weight: 600; 
+      font-size: 15px; text-transform: uppercase; transition: 0.3s;
+      cursor: pointer; padding-bottom: 5px;
     }
-    nav ul li a:hover, nav ul li a.active { 
-      color: var(--primary-red); 
-      border-bottom: 2px solid var(--primary-red);
+    nav ul li a:hover, nav ul li a.active { color: var(--primary-red); border-bottom: 2px solid var(--primary-red); }
+
+    /* Sign In Button in Header */
+    .btn-outline {
+      background: transparent; border: 2px solid var(--primary-red); color: var(--primary-red);
+      padding: 8px 20px; font-weight: 700; text-transform: uppercase; border-radius: 50px;
+      cursor: pointer; transition: 0.3s; font-family: 'Inter', sans-serif;
     }
+    .btn-outline:hover { background: var(--primary-red); color: #fff; }
 
     /* Page Sections Setup */
     .page-section { display: none; padding-bottom: 80px; flex-grow: 1; }
     .page-section.active-page { display: block; animation: fadeIn 0.4s ease-in-out; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
+    /* ---------------- AUTHENTICATION MODAL (POPUP) ---------------- */
+    .modal-overlay {
+      display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.7); z-index: 1000; align-items: center; justify-content: center;
+      backdrop-filter: blur(5px);
     }
+    .modal-overlay.active { display: flex; animation: fadeIn 0.2s ease-in-out; }
+    
+    .modal-box {
+      background: #fff; width: 100%; max-width: 400px; padding: 40px 30px;
+      border-radius: 16px; position: relative; box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+    }
+    .close-modal {
+      position: absolute; top: 15px; right: 20px; font-size: 24px; color: #999;
+      cursor: pointer; background: none; border: none; transition: 0.2s;
+    }
+    .close-modal:hover { color: var(--primary-red); }
+    
+    .modal-title { font-family: 'Rokkitt', serif; font-size: 32px; color: var(--primary-red); text-align: center; margin-bottom: 5px; }
+    .modal-subtitle { text-align: center; color: var(--text-muted); font-size: 14px; margin-bottom: 30px; }
+    
+    .auth-form { display: flex; flex-direction: column; gap: 15px; }
+    .form-group input {
+      width: 100%; padding: 12px 15px; border: 1px solid #ddd; border-radius: 8px;
+      font-family: 'Inter', sans-serif; font-size: 15px; outline: none; transition: 0.3s;
+    }
+    .form-group input:focus { border-color: var(--secondary-gold); box-shadow: 0 0 0 3px rgba(245, 176, 65, 0.2); }
+    
+    .btn-full {
+      background: var(--primary-red); color: #fff; padding: 12px; border: none; border-radius: 8px;
+      font-weight: 700; font-size: 16px; cursor: pointer; transition: 0.3s; margin-top: 10px;
+    }
+    .btn-full:hover { background: #b71c1c; }
+    
+    .modal-footer { text-align: center; margin-top: 20px; font-size: 14px; color: var(--text-muted); }
+    .modal-footer span { color: var(--primary-red); font-weight: 600; cursor: pointer; }
+    .modal-footer span:hover { text-decoration: underline; }
 
     /* ---------------- PAGE: HOME ---------------- */
     .hero {
       background: linear-gradient(rgba(18, 18, 18, 0.7), rgba(18, 18, 18, 0.8)), url('main.jpeg');
-      background-size: cover; background-position: center;
-      text-align: center; padding: 160px 20px; color: #fff;
+      background-size: cover; background-position: center; text-align: center; padding: 160px 20px; color: #fff;
     }
     .hero h1 { font-size: 70px; margin-bottom: 15px; color: var(--secondary-gold); text-shadow: 2px 2px 4px rgba(0,0,0,0.5); text-transform: uppercase; }
     .hero p { font-size: 22px; margin-bottom: 40px; font-weight: 300; max-width: 700px; margin-left: auto; margin-right: auto; }
     
     .btn { 
-      background: var(--primary-red); color: #fff; padding: 16px 40px; 
-      text-decoration: none; font-weight: 700; text-transform: uppercase;
-      border-radius: 50px; display: inline-block; transition: all 0.3s ease;
-      font-size: 16px; cursor: pointer; border: none;
-      box-shadow: 0 6px 15px rgba(211, 47, 47, 0.3);
+      background: var(--primary-red); color: #fff; padding: 16px 40px; text-decoration: none; font-weight: 700; 
+      text-transform: uppercase; border-radius: 50px; display: inline-block; transition: all 0.3s ease;
+      font-size: 16px; cursor: pointer; border: none; box-shadow: 0 6px 15px rgba(211, 47, 47, 0.3);
     }
     .btn:hover { background: #b71c1c; transform: translateY(-3px); box-shadow: 0 8px 20px rgba(211, 47, 47, 0.4); }
 
-    /* Highlights Section */
-    .highlights-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 30px;
-    }
-    .highlight-card {
-      background: var(--bg-card); padding: 30px; border-radius: 12px; border-top: 5px solid var(--primary-red); box-shadow: 0 6px 20px rgba(0,0,0,0.06); text-align: center;
-    }
+    /* Highlights & Reviews */
+    .highlights-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; }
+    .highlight-card { background: var(--bg-card); padding: 30px; border-radius: 12px; border-top: 5px solid var(--primary-red); box-shadow: 0 6px 20px rgba(0,0,0,0.06); text-align: center; }
     .highlight-icon { font-size: 36px; margin-bottom: 10px; }
     .highlight-card h3 { font-size: 24px; color: var(--primary-red); margin-bottom: 10px; font-family: 'Rokkitt', serif; text-transform: uppercase; }
     .highlight-card p { font-size: 15px; color: var(--text-dark); margin-bottom: 20px; }
-
-    /* Featured Review Section */
     .reviews { background: rgba(0,0,0,0.02); }
     .review-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
     .review-card { background: var(--bg-card); padding: 30px; border-radius: 8px; border-left: 4px solid var(--secondary-gold); box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
@@ -126,48 +146,18 @@
     .reviewer { font-weight: 600; font-family: 'Inter', sans-serif; color: var(--text-dark); text-transform: uppercase; font-size: 14px; }
 
     /* ---------------- PAGE: MENU ---------------- */
-    .menu-header {
-      background: var(--primary-red); color: #fff; text-align: center; padding: 60px 20px; margin-bottom: 30px;
-    }
+    .menu-header { background: var(--primary-red); color: #fff; text-align: center; padding: 60px 20px; margin-bottom: 30px; }
     .menu-header h1 { font-size: 48px; color: var(--secondary-gold); text-transform: uppercase; }
 
-    /* Top Search Bar Styling */
     .menu-search-container {
-      display: flex;
-      align-items: center;
-      border-bottom: 1px solid #d1d8dd;
-      padding: 10px 0;
-      margin: 20px auto 50px;
-      max-width: 100%;
+      display: flex; align-items: center; border-bottom: 1px solid #d1d8dd; padding: 10px 0; margin: 20px auto 50px; max-width: 100%;
     }
-    .menu-search-container svg {
-      width: 24px;
-      height: 24px;
-      stroke: var(--bright-yellow);
-      stroke-width: 2.5;
-      fill: none;
-      margin-right: 15px;
-    }
-    .menu-search-container input {
-      flex: 1;
-      border: none;
-      outline: none;
-      font-size: 18px;
-      font-family: 'Inter', sans-serif;
-      background: transparent;
-      color: var(--text-dark);
-    }
-    .menu-search-container input::placeholder {
-      color: #e0b868;
-      opacity: 0.8;
-    }
+    .menu-search-container svg { width: 24px; height: 24px; stroke: var(--bright-yellow); stroke-width: 2.5; fill: none; margin-right: 15px; }
+    .menu-search-container input { flex: 1; border: none; outline: none; font-size: 18px; font-family: 'Inter', sans-serif; background: transparent; color: var(--text-dark); }
+    .menu-search-container input::placeholder { color: #e0b868; opacity: 0.8; }
 
     .category-wrapper { margin-top: 40px; }
-    .category-title {
-      font-size: 36px; color: var(--primary-red); margin-bottom: 25px; 
-      border-bottom: 3px solid var(--secondary-gold); display: inline-block; padding-right: 20px;
-    }
-    
+    .category-title { font-size: 36px; color: var(--primary-red); margin-bottom: 25px; border-bottom: 3px solid var(--secondary-gold); display: inline-block; padding-right: 20px; }
     .category-content { display: flex; gap: 50px; align-items: flex-start; }
     .menu-list { flex: 1; display: flex; flex-direction: column; gap: 18px; }
     
@@ -175,9 +165,7 @@
     .item-info { display: flex; flex-direction: column; }
     .item-name { font-size: 18px; font-weight: 700; color: var(--text-dark); }
     .item-desc { font-size: 14px; color: var(--text-muted); font-weight: 600; margin-top: 2px; }
-    
     .item-dots { flex-grow: 1; border-bottom: 2px dotted #d1d8dd; margin: 0 15px 6px 15px; opacity: 0.8; }
-    
     .item-price { font-family: 'Rokkitt', serif; font-size: 22px; font-weight: 700; color: var(--primary-red); white-space: nowrap; }
 
     .category-image { flex: 0 0 350px; }
@@ -190,59 +178,17 @@
     .about-image { width: 100%; height: 400px; object-fit: cover; border-radius: 16px; margin: 40px 0; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
 
     /* ---------------- YELLOW FLOATING CONTROLS ---------------- */
-    .floating-controls {
-      position: fixed;
-      bottom: 30px;
-      right: 30px;
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-      z-index: 1000;
-    }
-
+    .floating-controls { position: fixed; bottom: 30px; right: 30px; display: flex; flex-direction: column; gap: 15px; z-index: 1000; }
     .float-btn {
-      width: 55px;
-      height: 55px;
-      border-radius: 50%;
-      background: var(--bright-yellow);
-      border: none;
-      box-shadow: 0 8px 20px rgba(251, 186, 32, 0.4);
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: all 0.3s ease;
+      width: 55px; height: 55px; border-radius: 50%; background: var(--bright-yellow); border: none;
+      box-shadow: 0 8px 20px rgba(251, 186, 32, 0.4); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.3s ease;
     }
+    .float-btn svg { width: 24px; height: 24px; stroke: #ffffff; stroke-width: 2.5; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+    .float-btn:hover { transform: translateY(-4px); box-shadow: 0 10px 25px rgba(251, 186, 32, 0.6); background: #f1af17; }
+    #goTopBtn { opacity: 0; pointer-events: none; transform: translateY(20px); }
+    #goTopBtn.visible { opacity: 1; pointer-events: auto; transform: translateY(0); }
 
-    .float-btn svg {
-      width: 24px;
-      height: 24px;
-      stroke: #ffffff;
-      stroke-width: 2.5;
-      fill: none;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-    }
-
-    .float-btn:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 10px 25px rgba(251, 186, 32, 0.6);
-      background: #f1af17;
-    }
-
-    #goTopBtn {
-      opacity: 0;
-      pointer-events: none;
-      transform: translateY(20px);
-    }
-    
-    #goTopBtn.visible {
-      opacity: 1;
-      pointer-events: auto;
-      transform: translateY(0);
-    }
-
-    /* Contact & Order Section Footer */
+    /* Footer */
     footer { background: #2c3e50; color: #fff; text-align: center; padding: 60px 20px; margin-top: auto; border-top: 1px solid #333; }
     .contact-info { font-size: 18px; color: #bdc3c7; margin-bottom: 30px; line-height: 2; }
     .contact-info strong { color: var(--secondary-gold); }
@@ -256,6 +202,7 @@
     }
     @media (max-width: 768px) {
       nav { flex-direction: column; gap: 15px; }
+      .nav-right { flex-direction: column; gap: 15px; }
       nav ul { flex-wrap: wrap; justify-content: center; }
       .hero h1 { font-size: 50px; }
       .menu-item { flex-direction: column; align-items: flex-start; gap: 5px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
@@ -266,24 +213,72 @@
 </head>
 <body>
 
+  <!-- ==================== AUTHENTICATION MODAL ==================== -->
+  <div class="modal-overlay" id="authModal">
+    <div class="modal-box">
+      <button class="close-modal" id="closeModalBtn">&times;</button>
+      
+      <!-- Login View -->
+      <div id="loginView">
+        <h2 class="modal-title">Welcome Back</h2>
+        <p class="modal-subtitle">Sign in to access your orders.</p>
+        <form class="auth-form" onsubmit="event.preventDefault(); alert('Backend database not connected yet!');">
+          <div class="form-group">
+            <input type="email" placeholder="Email Address" required>
+          </div>
+          <div class="form-group">
+            <input type="password" placeholder="Password" required>
+          </div>
+          <button type="submit" class="btn-full">Sign In</button>
+        </form>
+        <p class="modal-footer">Don't have an account? <span id="showRegister">Create one</span></p>
+      </div>
+
+      <!-- Register View (Hidden by default) -->
+      <div id="registerView" style="display: none;">
+        <h2 class="modal-title">Join Crust House</h2>
+        <p class="modal-subtitle">Create an account for faster checkout.</p>
+        <form class="auth-form" onsubmit="event.preventDefault(); alert('Backend database not connected yet!');">
+          <div class="form-group">
+            <input type="text" placeholder="Full Name" required>
+          </div>
+          <div class="form-group">
+            <input type="email" placeholder="Email Address" required>
+          </div>
+          <div class="form-group">
+            <input type="password" placeholder="Password" required>
+          </div>
+          <button type="submit" class="btn-full">Create Account</button>
+        </form>
+        <p class="modal-footer">Already have an account? <span id="showLogin">Sign in</span></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Navigation -->
   <header>
     <nav>
       <a class="logo-container" onclick="navigate('home')">
         <img src="main.png" alt="Crust House Logo" class="logo-img">
         <span class="brand">CRUST HOUSE</span>
       </a>
-      <ul>
-        <li><a class="nav-link active" id="nav-home" onclick="navigate('home')">Home</a></li>
-        <li><a class="nav-link" id="nav-menu" onclick="navigate('menu')">Menu</a></li>
-        <li><a class="nav-link" id="nav-about" onclick="navigate('about')">About Us</a></li>
-      </ul>
+      
+      <div class="nav-right">
+        <ul>
+          <li><a class="nav-link active" id="nav-home" onclick="navigate('home')">Home</a></li>
+          <li><a class="nav-link" id="nav-menu" onclick="navigate('menu')">Menu</a></li>
+          <li><a class="nav-link" id="nav-about" onclick="navigate('about')">About Us</a></li>
+        </ul>
+        <button class="btn-outline" id="openModalBtn">Sign In / Register</button>
+      </div>
     </nav>
   </header>
 
+  <!-- ==================== HOME PAGE ==================== -->
   <main id="home" class="page-section active-page">
     <section class="hero">
       <div class="container">
-        <h1>Fresh & Hot.<br>Fast Delivery.</h1>
+        <h1>Fresh & Hot.<br>Delivered Fast.</h1>
         <p>Your ultimate destination for freshly baked pizzas, succulent burgers, and fast food perfection in Barakahu. Prepared with love, served with pride.</p>
         <button class="btn" onclick="navigate('menu')">Explore Our Menu</button>
       </div>
@@ -341,6 +336,7 @@
     </section>
   </main>
 
+  <!-- ==================== MENU PAGE ==================== -->
   <main id="menu" class="page-section">
     <div class="menu-header">
       <h1>Our Complete Menu</h1>
@@ -349,6 +345,7 @@
     
     <div class="container">
       
+      <!-- Top Search Bar inside Menu -->
       <div class="menu-search-container">
         <svg viewBox="0 0 24 24">
           <circle cx="11" cy="11" r="8"></circle>
@@ -357,6 +354,7 @@
         <input type="text" id="mainMenuSearch" placeholder="Search for items...">
       </div>
 
+      <!-- PIZZAS -->
       <div class="category-wrapper">
         <h2 class="category-title uppercase-text">🍕 Premium Pizzas</h2>
         <div class="category-content">
@@ -389,6 +387,7 @@
         </div>
       </div>
 
+      <!-- BURGERS -->
       <div class="category-wrapper">
         <h2 class="category-title uppercase-text">🍔 Burger Zone</h2>
         <div class="category-content">
@@ -412,6 +411,7 @@
         </div>
       </div>
 
+      <!-- PASTA -->
       <div class="category-wrapper">
         <h2 class="category-title uppercase-text">🍝 Baked Pasta</h2>
         <div class="category-content">
@@ -429,6 +429,7 @@
         </div>
       </div>
 
+      <!-- SANDWICHES & ROLLS -->
       <div class="category-wrapper">
         <h2 class="category-title uppercase-text">🥪 Sandwiches & 🌯 Rolls</h2>
         <div class="category-content">
@@ -458,6 +459,7 @@
         </div>
       </div>
 
+      <!-- APPETIZERS & FRIED CHICKEN -->
       <div class="category-wrapper">
         <h2 class="category-title uppercase-text">🍗 Appetizers & Fried Chicken</h2>
         <div class="category-content">
@@ -493,6 +495,7 @@
         </div>
       </div>
 
+      <!-- DRINKS -->
       <div class="category-wrapper">
         <h2 class="category-title uppercase-text">🥤 Drinks</h2>
         <div class="category-content">
@@ -513,6 +516,7 @@
     </div>
   </main>
 
+  <!-- ==================== ABOUT US PAGE ==================== -->
   <main id="about" class="page-section">
     <div class="container about-container">
       <h1 class="about-title">The Crust House Story</h1>
@@ -531,8 +535,10 @@
     </div>
   </main>
 
+  <!-- ==================== YELLOW FLOATING CONTROLS ==================== -->
   <div class="floating-controls">
     
+    <!-- Float Search Icon -->
     <button class="float-btn" id="floatSearchBtn" title="Search Menu">
       <svg viewBox="0 0 24 24">
         <circle cx="11" cy="11" r="8"></circle>
@@ -540,6 +546,7 @@
       </svg>
     </button>
     
+    <!-- Float Go To Top Icon -->
     <button class="float-btn" id="goTopBtn" title="Go to Top">
       <svg viewBox="0 0 24 24">
         <polyline points="18 15 12 9 6 15"></polyline>
@@ -548,19 +555,21 @@
 
   </div>
 
+  <!-- ==================== GLOBAL FOOTER ==================== -->
   <footer>
     <div class="container">
       <h2 style="font-size: 32px; margin-bottom: 20px; color: #fff; font-family: 'Rokkitt', serif; text-transform: uppercase;">Visit or Order From Us</h2>
       <div class="contact-info">
         <p>📍 <strong>Location:</strong> Itehad Center, 1st Floor Shop #2, Main Murree Road, Barakahu</p>
-        <p>📞 <strong>Phone:</strong> 0310-1500234 &nbsp;|&nbsp; 🕒 <strong>Open Daily</strong></p>
+        <p>📞 <strong>Phone:</strong> 03XX-XXXXXXX &nbsp;|&nbsp; 🕒 <strong>Open Daily</strong></p>
         <p>🚗 Dine-in &nbsp;&bull;&nbsp; Takeaway &nbsp;&bull;&nbsp; Delivery</p>
       </div>
-      <a href="https://wa.me/923101500234" class="wa-btn" target="_blank">Order via WhatsApp</a>
+      <a href="https://wa.me/92XXXXXXXXXX" class="wa-btn" target="_blank">Order via WhatsApp</a>
       <p style="margin-top: 30px; color: #7f8c8d; font-size: 14px; font-family: 'Inter', sans-serif;">© 2026 Crust House. All rights reserved.</p>
     </div>
   </footer>
 
+  <!-- ==================== JAVASCRIPT ==================== -->
   <script>
     /* PAGE NAVIGATION LOGIC */
     function navigate(pageId) {
@@ -579,7 +588,6 @@
     const goTopBtn = document.getElementById('goTopBtn');
     
     window.addEventListener('scroll', () => {
-      // Show button if scrolled down more than 300 pixels
       if (window.scrollY > 300) {
         goTopBtn.classList.add('visible');
       } else {
@@ -596,7 +604,6 @@
     const searchInput = document.getElementById('mainMenuSearch');
     const categoryWrappers = document.querySelectorAll('.category-wrapper');
 
-    // Click floating search jumps to menu and focuses input
     floatSearchBtn.addEventListener('click', () => {
       if (!document.getElementById('menu').classList.contains('active-page')) {
         navigate('menu');
@@ -606,7 +613,6 @@
       }, 100);
     });
 
-    // Actual search filtering
     searchInput.addEventListener('input', (e) => {
       filterMenu(e.target.value.toLowerCase());
     });
@@ -619,10 +625,10 @@
         items.forEach(item => {
           const itemName = item.querySelector('.item-name').innerText.toLowerCase();
           if (itemName.includes(query)) {
-            item.style.display = "flex"; // Show item
+            item.style.display = "flex";
             categoryHasMatch = true;
           } else {
-            item.style.display = "none"; // Hide item
+            item.style.display = "none";
           }
         });
 
@@ -633,6 +639,44 @@
         }
       });
     }
+
+    /* AUTHENTICATION MODAL LOGIC */
+    const authModal = document.getElementById('authModal');
+    const openModalBtn = document.getElementById('openModalBtn');
+    const closeModalBtn = document.getElementById('closeModalBtn');
+    const loginView = document.getElementById('loginView');
+    const registerView = document.getElementById('registerView');
+    const showRegisterLink = document.getElementById('showRegister');
+    const showLoginLink = document.getElementById('showLogin');
+
+    // Open Modal
+    openModalBtn.addEventListener('click', () => {
+      authModal.classList.add('active');
+    });
+
+    // Close Modal
+    closeModalBtn.addEventListener('click', () => {
+      authModal.classList.remove('active');
+    });
+
+    // Close Modal when clicking outside the box
+    authModal.addEventListener('click', (e) => {
+      if (e.target === authModal) {
+        authModal.classList.remove('active');
+      }
+    });
+
+    // Switch to Register
+    showRegisterLink.addEventListener('click', () => {
+      loginView.style.display = 'none';
+      registerView.style.display = 'block';
+    });
+
+    // Switch to Login
+    showLoginLink.addEventListener('click', () => {
+      registerView.style.display = 'none';
+      loginView.style.display = 'block';
+    });
   </script>
 
 </body>
