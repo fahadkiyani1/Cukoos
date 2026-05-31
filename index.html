@@ -10,6 +10,9 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Rokkitt:wght@500;700;900&display=swap" rel="stylesheet">
 
   <style>
+    /* Smooth scrolling for the Go To Top button */
+    html { scroll-behavior: smooth; }
+
     /* Appetite-Whetting Color Palette */
     :root {
       --primary-red: #d32f2f;
@@ -154,6 +157,82 @@
     .about-text { font-size: 18px; color: var(--text-dark); line-height: 1.8; margin-bottom: 20px; text-align: justify; }
     .about-image { width: 100%; height: 400px; object-fit: cover; border-radius: 16px; margin: 40px 0; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
 
+    /* ---------------- FLOATING CONTROLS (Search & Top) ---------------- */
+    .floating-controls {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      z-index: 1000;
+      align-items: flex-end;
+    }
+
+    .search-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .floating-search-input {
+      width: 0;
+      opacity: 0;
+      padding: 0;
+      height: 50px;
+      border-radius: 25px;
+      border: 2px solid var(--primary-red);
+      font-family: 'Inter', sans-serif;
+      font-size: 16px;
+      outline: none;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      pointer-events: none;
+      background: #fff;
+      color: var(--text-dark);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+    }
+
+    .floating-search-input.show {
+      width: 250px;
+      opacity: 1;
+      padding: 0 20px;
+      pointer-events: auto;
+    }
+
+    .float-btn {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: var(--primary-red);
+      color: #fff;
+      border: none;
+      box-shadow: 0 4px 15px rgba(211, 47, 47, 0.4);
+      cursor: pointer;
+      font-size: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+    }
+
+    .float-btn:hover {
+      transform: translateY(-4px);
+      background: #b71c1c;
+      box-shadow: 0 6px 20px rgba(211, 47, 47, 0.6);
+    }
+
+    #goTopBtn {
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(20px);
+    }
+    
+    #goTopBtn.visible {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(0);
+    }
+
     /* Contact & Order Section Footer */
     footer { background: #2c3e50; color: #fff; text-align: center; padding: 60px 20px; margin-top: auto; border-top: 1px solid #333; }
     .contact-info { font-size: 18px; color: #bdc3c7; margin-bottom: 30px; line-height: 2; }
@@ -173,11 +252,13 @@
       .menu-item { flex-direction: column; align-items: flex-start; gap: 5px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
       .item-dots { display: none; }
       .item-price { align-self: flex-start; }
+      .floating-search-input.show { width: 200px; }
     }
   </style>
 </head>
 <body>
 
+  <!-- Navigation -->
   <header>
     <nav>
       <a class="logo-container" onclick="navigate('home')">
@@ -192,6 +273,7 @@
     </nav>
   </header>
 
+  <!-- ==================== HOME PAGE ==================== -->
   <main id="home" class="page-section active-page">
     <section class="hero">
       <div class="container">
@@ -253,6 +335,7 @@
     </section>
   </main>
 
+  <!-- ==================== MENU PAGE ==================== -->
   <main id="menu" class="page-section">
     <div class="menu-header">
       <h1>Our Complete Menu</h1>
@@ -261,6 +344,7 @@
     
     <div class="container">
       
+      <!-- PIZZAS -->
       <div class="category-wrapper">
         <h2 class="category-title uppercase-text">🍕 Premium Pizzas</h2>
         <div class="category-content">
@@ -293,6 +377,7 @@
         </div>
       </div>
 
+      <!-- BURGERS -->
       <div class="category-wrapper">
         <h2 class="category-title uppercase-text">🍔 Burger Zone</h2>
         <div class="category-content">
@@ -316,6 +401,7 @@
         </div>
       </div>
 
+      <!-- PASTA -->
       <div class="category-wrapper">
         <h2 class="category-title uppercase-text">🍝 Baked Pasta</h2>
         <div class="category-content">
@@ -333,6 +419,7 @@
         </div>
       </div>
 
+      <!-- SANDWICHES & ROLLS -->
       <div class="category-wrapper">
         <h2 class="category-title uppercase-text">🥪 Sandwiches & 🌯 Rolls</h2>
         <div class="category-content">
@@ -362,6 +449,7 @@
         </div>
       </div>
 
+      <!-- APPETIZERS & FRIED CHICKEN -->
       <div class="category-wrapper">
         <h2 class="category-title uppercase-text">🍗 Appetizers & Fried Chicken</h2>
         <div class="category-content">
@@ -397,6 +485,7 @@
         </div>
       </div>
 
+      <!-- DRINKS -->
       <div class="category-wrapper">
         <h2 class="category-title uppercase-text">🥤 Drinks</h2>
         <div class="category-content">
@@ -417,6 +506,7 @@
     </div>
   </main>
 
+  <!-- ==================== ABOUT US PAGE ==================== -->
   <main id="about" class="page-section">
     <div class="container about-container">
       <h1 class="about-title">The Crust House Story</h1>
@@ -435,41 +525,114 @@
     </div>
   </main>
 
+  <!-- ==================== FLOATING CONTROLS ==================== -->
+  <div class="floating-controls">
+    
+    <!-- Search Bar -->
+    <div class="search-wrapper">
+      <input type="text" id="menuSearch" class="floating-search-input" placeholder="Find a dish...">
+      <button class="float-btn" id="searchBtn" title="Search Menu">🔍</button>
+    </div>
+    
+    <!-- Go To Top Button -->
+    <button class="float-btn" id="goTopBtn" title="Go to Top">⬆️</button>
+
+  </div>
+
+  <!-- ==================== GLOBAL FOOTER ==================== -->
   <footer>
     <div class="container">
       <h2 style="font-size: 32px; margin-bottom: 20px; color: #fff; font-family: 'Rokkitt', serif; text-transform: uppercase;">Visit or Order From Us</h2>
       <div class="contact-info">
         <p>📍 <strong>Location:</strong> Itehad Center, 1st Floor Shop #2, Main Murree Road, Barakahu</p>
-        <p>📞 <strong>Phone:</strong> 0310-1500234 &nbsp;|&nbsp; 🕒 <strong>Open Daily</strong></p>
+        <p>📞 <strong>Phone:</strong> 03XX-XXXXXXX &nbsp;|&nbsp; 🕒 <strong>Open Daily</strong></p>
         <p>🚗 Dine-in &nbsp;&bull;&nbsp; Takeaway &nbsp;&bull;&nbsp; Delivery</p>
       </div>
-      <a href="https://wa.me/923101500234" class="wa-btn" target="_blank">Order via WhatsApp</a>
-      <p style="margin-top: 30px; color: #7f8c8d; font-size: 14px;">© 2026 Crust House. All rights reserved.</p>
+      <a href="https://wa.me/92XXXXXXXXXX" class="wa-btn" target="_blank">Order via WhatsApp</a>
+      <p style="margin-top: 30px; color: #7f8c8d; font-size: 14px; font-family: 'Inter', sans-serif;">© 2026 Crust House. All rights reserved.</p>
     </div>
   </footer>
 
+  <!-- ==================== JAVASCRIPT ==================== -->
   <script>
+    /* PAGE NAVIGATION LOGIC */
     function navigate(pageId) {
-      // Hide all pages
       const pages = document.querySelectorAll('.page-section');
-      pages.forEach(page => {
-        page.classList.remove('active-page');
-      });
-
-      // Show the requested page
+      pages.forEach(page => page.classList.remove('active-page'));
       document.getElementById(pageId).classList.add('active-page');
 
-      // Remove 'active' styling from all navigation links
       const navLinks = document.querySelectorAll('.nav-link');
-      navLinks.forEach(link => {
-        link.classList.remove('active');
-      });
-
-      // Add 'active' styling to the clicked link
+      navLinks.forEach(link => link.classList.remove('active'));
       document.getElementById('nav-' + pageId).classList.add('active');
 
-      // Scroll back to the top of the page
       window.scrollTo(0, 0);
+    }
+
+    /* GO TO TOP LOGIC */
+    const goTopBtn = document.getElementById('goTopBtn');
+    
+    window.addEventListener('scroll', () => {
+      // Show button if scrolled down more than 300 pixels
+      if (window.scrollY > 300) {
+        goTopBtn.classList.add('visible');
+      } else {
+        goTopBtn.classList.remove('visible');
+      }
+    });
+
+    goTopBtn.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    /* MENU SEARCH LOGIC */
+    const searchBtn = document.getElementById('searchBtn');
+    const searchInput = document.getElementById('menuSearch');
+    const categoryWrappers = document.querySelectorAll('.category-wrapper');
+
+    searchBtn.addEventListener('click', () => {
+      // If user isn't on the Menu page, take them there first!
+      if (!document.getElementById('menu').classList.contains('active-page')) {
+        navigate('menu');
+      }
+      
+      // Expand or collapse the input box
+      searchInput.classList.toggle('show');
+      
+      if (searchInput.classList.contains('show')) {
+        searchInput.focus();
+      } else {
+        // Clear search when closed
+        searchInput.value = '';
+        filterMenu('');
+      }
+    });
+
+    searchInput.addEventListener('input', (e) => {
+      filterMenu(e.target.value.toLowerCase());
+    });
+
+    function filterMenu(query) {
+      categoryWrappers.forEach(category => {
+        let categoryHasMatch = false;
+        const items = category.querySelectorAll('.menu-item');
+        
+        items.forEach(item => {
+          const itemName = item.querySelector('.item-name').innerText.toLowerCase();
+          if (itemName.includes(query)) {
+            item.style.display = "flex"; // Show item
+            categoryHasMatch = true;
+          } else {
+            item.style.display = "none"; // Hide item
+          }
+        });
+
+        // Hide the whole category (like "Burgers" or "Drinks") if nothing inside it matches the search
+        if (categoryHasMatch) {
+          category.style.display = "block";
+        } else {
+          category.style.display = "none";
+        }
+      });
     }
   </script>
 
