@@ -10,13 +10,14 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Rokkitt:wght@500;700;900&display=swap" rel="stylesheet">
 
   <style>
-    /* Smooth scrolling for the Go To Top button */
+    /* Smooth scrolling */
     html { scroll-behavior: smooth; }
 
-    /* Appetite-Whetting Color Palette */
+    /* Color Palette */
     :root {
       --primary-red: #d32f2f;
       --secondary-gold: #f5b041;
+      --bright-yellow: #fbba20;
       --bg-warm: #fffdf9;
       --bg-card: #ffffff;
       --text-dark: #2c3e50;
@@ -126,11 +127,42 @@
 
     /* ---------------- PAGE: MENU ---------------- */
     .menu-header {
-      background: var(--primary-red); color: #fff; text-align: center; padding: 60px 20px; margin-bottom: 40px;
+      background: var(--primary-red); color: #fff; text-align: center; padding: 60px 20px; margin-bottom: 30px;
     }
     .menu-header h1 { font-size: 48px; color: var(--secondary-gold); text-transform: uppercase; }
 
-    .category-wrapper { margin-top: 60px; }
+    /* Top Search Bar Styling */
+    .menu-search-container {
+      display: flex;
+      align-items: center;
+      border-bottom: 1px solid #d1d8dd;
+      padding: 10px 0;
+      margin: 20px auto 50px;
+      max-width: 100%;
+    }
+    .menu-search-container svg {
+      width: 24px;
+      height: 24px;
+      stroke: var(--bright-yellow);
+      stroke-width: 2.5;
+      fill: none;
+      margin-right: 15px;
+    }
+    .menu-search-container input {
+      flex: 1;
+      border: none;
+      outline: none;
+      font-size: 18px;
+      font-family: 'Inter', sans-serif;
+      background: transparent;
+      color: var(--text-dark);
+    }
+    .menu-search-container input::placeholder {
+      color: #e0b868;
+      opacity: 0.8;
+    }
+
+    .category-wrapper { margin-top: 40px; }
     .category-title {
       font-size: 36px; color: var(--primary-red); margin-bottom: 25px; 
       border-bottom: 3px solid var(--secondary-gold); display: inline-block; padding-right: 20px;
@@ -157,7 +189,7 @@
     .about-text { font-size: 18px; color: var(--text-dark); line-height: 1.8; margin-bottom: 20px; text-align: justify; }
     .about-image { width: 100%; height: 400px; object-fit: cover; border-radius: 16px; margin: 40px 0; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
 
-    /* ---------------- FLOATING CONTROLS (Search & Top) ---------------- */
+    /* ---------------- YELLOW FLOATING CONTROLS ---------------- */
     .floating-controls {
       position: fixed;
       bottom: 30px;
@@ -166,59 +198,36 @@
       flex-direction: column;
       gap: 15px;
       z-index: 1000;
-      align-items: flex-end;
-    }
-
-    .search-wrapper {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .floating-search-input {
-      width: 0;
-      opacity: 0;
-      padding: 0;
-      height: 50px;
-      border-radius: 25px;
-      border: 2px solid var(--primary-red);
-      font-family: 'Inter', sans-serif;
-      font-size: 16px;
-      outline: none;
-      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-      pointer-events: none;
-      background: #fff;
-      color: var(--text-dark);
-      box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-    }
-
-    .floating-search-input.show {
-      width: 250px;
-      opacity: 1;
-      padding: 0 20px;
-      pointer-events: auto;
     }
 
     .float-btn {
-      width: 50px;
-      height: 50px;
+      width: 55px;
+      height: 55px;
       border-radius: 50%;
-      background: var(--primary-red);
-      color: #fff;
+      background: var(--bright-yellow);
       border: none;
-      box-shadow: 0 4px 15px rgba(211, 47, 47, 0.4);
+      box-shadow: 0 8px 20px rgba(251, 186, 32, 0.4);
       cursor: pointer;
-      font-size: 20px;
       display: flex;
       align-items: center;
       justify-content: center;
       transition: all 0.3s ease;
     }
 
+    .float-btn svg {
+      width: 24px;
+      height: 24px;
+      stroke: #ffffff;
+      stroke-width: 2.5;
+      fill: none;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
     .float-btn:hover {
       transform: translateY(-4px);
-      background: #b71c1c;
-      box-shadow: 0 6px 20px rgba(211, 47, 47, 0.6);
+      box-shadow: 0 10px 25px rgba(251, 186, 32, 0.6);
+      background: #f1af17;
     }
 
     #goTopBtn {
@@ -252,13 +261,11 @@
       .menu-item { flex-direction: column; align-items: flex-start; gap: 5px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
       .item-dots { display: none; }
       .item-price { align-self: flex-start; }
-      .floating-search-input.show { width: 200px; }
     }
   </style>
 </head>
 <body>
 
-  <!-- Navigation -->
   <header>
     <nav>
       <a class="logo-container" onclick="navigate('home')">
@@ -273,7 +280,6 @@
     </nav>
   </header>
 
-  <!-- ==================== HOME PAGE ==================== -->
   <main id="home" class="page-section active-page">
     <section class="hero">
       <div class="container">
@@ -335,7 +341,6 @@
     </section>
   </main>
 
-  <!-- ==================== MENU PAGE ==================== -->
   <main id="menu" class="page-section">
     <div class="menu-header">
       <h1>Our Complete Menu</h1>
@@ -344,7 +349,14 @@
     
     <div class="container">
       
-      <!-- PIZZAS -->
+      <div class="menu-search-container">
+        <svg viewBox="0 0 24 24">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+        <input type="text" id="mainMenuSearch" placeholder="Search for items...">
+      </div>
+
       <div class="category-wrapper">
         <h2 class="category-title uppercase-text">🍕 Premium Pizzas</h2>
         <div class="category-content">
@@ -377,7 +389,6 @@
         </div>
       </div>
 
-      <!-- BURGERS -->
       <div class="category-wrapper">
         <h2 class="category-title uppercase-text">🍔 Burger Zone</h2>
         <div class="category-content">
@@ -401,7 +412,6 @@
         </div>
       </div>
 
-      <!-- PASTA -->
       <div class="category-wrapper">
         <h2 class="category-title uppercase-text">🍝 Baked Pasta</h2>
         <div class="category-content">
@@ -419,7 +429,6 @@
         </div>
       </div>
 
-      <!-- SANDWICHES & ROLLS -->
       <div class="category-wrapper">
         <h2 class="category-title uppercase-text">🥪 Sandwiches & 🌯 Rolls</h2>
         <div class="category-content">
@@ -449,7 +458,6 @@
         </div>
       </div>
 
-      <!-- APPETIZERS & FRIED CHICKEN -->
       <div class="category-wrapper">
         <h2 class="category-title uppercase-text">🍗 Appetizers & Fried Chicken</h2>
         <div class="category-content">
@@ -485,7 +493,6 @@
         </div>
       </div>
 
-      <!-- DRINKS -->
       <div class="category-wrapper">
         <h2 class="category-title uppercase-text">🥤 Drinks</h2>
         <div class="category-content">
@@ -506,7 +513,6 @@
     </div>
   </main>
 
-  <!-- ==================== ABOUT US PAGE ==================== -->
   <main id="about" class="page-section">
     <div class="container about-container">
       <h1 class="about-title">The Crust House Story</h1>
@@ -525,21 +531,23 @@
     </div>
   </main>
 
-  <!-- ==================== FLOATING CONTROLS ==================== -->
   <div class="floating-controls">
     
-    <!-- Search Bar -->
-    <div class="search-wrapper">
-      <input type="text" id="menuSearch" class="floating-search-input" placeholder="Find a dish...">
-      <button class="float-btn" id="searchBtn" title="Search Menu">🔍</button>
-    </div>
+    <button class="float-btn" id="floatSearchBtn" title="Search Menu">
+      <svg viewBox="0 0 24 24">
+        <circle cx="11" cy="11" r="8"></circle>
+        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+      </svg>
+    </button>
     
-    <!-- Go To Top Button -->
-    <button class="float-btn" id="goTopBtn" title="Go to Top">⬆️</button>
+    <button class="float-btn" id="goTopBtn" title="Go to Top">
+      <svg viewBox="0 0 24 24">
+        <polyline points="18 15 12 9 6 15"></polyline>
+      </svg>
+    </button>
 
   </div>
 
-  <!-- ==================== GLOBAL FOOTER ==================== -->
   <footer>
     <div class="container">
       <h2 style="font-size: 32px; margin-bottom: 20px; color: #fff; font-family: 'Rokkitt', serif; text-transform: uppercase;">Visit or Order From Us</h2>
@@ -553,7 +561,6 @@
     </div>
   </footer>
 
-  <!-- ==================== JAVASCRIPT ==================== -->
   <script>
     /* PAGE NAVIGATION LOGIC */
     function navigate(pageId) {
@@ -584,29 +591,22 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     });
 
-    /* MENU SEARCH LOGIC */
-    const searchBtn = document.getElementById('searchBtn');
-    const searchInput = document.getElementById('menuSearch');
+    /* SEARCH LOGIC */
+    const floatSearchBtn = document.getElementById('floatSearchBtn');
+    const searchInput = document.getElementById('mainMenuSearch');
     const categoryWrappers = document.querySelectorAll('.category-wrapper');
 
-    searchBtn.addEventListener('click', () => {
-      // If user isn't on the Menu page, take them there first!
+    // Click floating search jumps to menu and focuses input
+    floatSearchBtn.addEventListener('click', () => {
       if (!document.getElementById('menu').classList.contains('active-page')) {
         navigate('menu');
       }
-      
-      // Expand or collapse the input box
-      searchInput.classList.toggle('show');
-      
-      if (searchInput.classList.contains('show')) {
+      setTimeout(() => {
         searchInput.focus();
-      } else {
-        // Clear search when closed
-        searchInput.value = '';
-        filterMenu('');
-      }
+      }, 100);
     });
 
+    // Actual search filtering
     searchInput.addEventListener('input', (e) => {
       filterMenu(e.target.value.toLowerCase());
     });
@@ -626,7 +626,6 @@
           }
         });
 
-        // Hide the whole category (like "Burgers" or "Drinks") if nothing inside it matches the search
         if (categoryHasMatch) {
           category.style.display = "block";
         } else {
