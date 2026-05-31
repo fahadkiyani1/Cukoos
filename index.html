@@ -39,9 +39,9 @@
     /* ---------------- HEADER & NAV ---------------- */
     header { background: #ffffff; position: sticky; top: 0; z-index: 100; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
     nav { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; max-width: 1200px; margin: 0 auto; }
-    .logo-container { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+    .logo-container { display: flex; align-items: center; gap: 10px; cursor: pointer; text-decoration: none; }
     .logo-img { height: 45px; width: auto; }
-    .brand { font-size: clamp(24px, 4vw, 32px); font-weight: 900; color: var(--primary-red); text-transform: uppercase; }
+    .brand { font-size: clamp(24px, 4vw, 32px); font-weight: 900; color: var(--text-dark); text-transform: uppercase; }
     
     .nav-right { display: flex; align-items: center; gap: 20px; }
     .nav-links { list-style: none; display: flex; gap: 30px; align-items: center; }
@@ -61,7 +61,7 @@
     .page-section.active-page { display: block; animation: fadeIn 0.4s ease; }
     @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-    /* Home Hero - CHANGED BACKGROUND TO cukoos.png */
+    /* Home Hero */
     .hero { background: linear-gradient(rgba(18, 18, 18, 0.7), rgba(18, 18, 18, 0.8)), url('cukoos.png'); background-size: cover; background-position: center; text-align: center; padding: 120px 20px; color: #fff; }
     .hero h1 { font-size: clamp(36px, 6vw, 60px); margin-bottom: 15px; color: #fff; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); text-transform: uppercase; letter-spacing: 2px;}
     .hero p { font-size: clamp(16px, 3vw, 18px); margin-bottom: 40px; font-weight: 300; max-width: 800px; margin-left: auto; margin-right: auto; line-height: 1.8;}
@@ -173,7 +173,7 @@
     .modal-footer span { color: var(--primary-red); font-weight: 600; cursor: pointer; padding: 5px;}
 
     /* Options Selection Modal Buttons */
-    .option-btn { width: 100%; background: transparent; border: 2px solid var(--secondary-gold); color: var(--text-dark); padding: 14px; border-radius: 8px; font-family: 'Inter', sans-serif; font-size: 16px; cursor: pointer; transition: 0.2s; display: flex; justify-content: space-between; align-items: center; }
+    .option-btn { width: 100%; background: transparent; border: 2px solid var(--secondary-gold); color: var(--text-dark); padding: 14px; border-radius: 8px; font-family: 'Inter', sans-serif; font-size: 16px; cursor: pointer; transition: 0.2s; display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;}
     .option-btn:hover { background: var(--secondary-gold); color: #fff; }
     .option-btn strong { color: var(--primary-red); }
     .option-btn:hover strong { color: #fff; }
@@ -223,7 +223,7 @@
       <button class="close-modal" id="closeOptionsBtn">&times;</button>
       <h2 class="modal-title" id="optionsItemName">Item Name</h2>
       <p class="modal-subtitle">Choose your size or variation</p>
-      <div id="optionsContainer" style="display: flex; flex-direction: column; gap: 12px;">
+      <div id="optionsContainer" style="display: flex; flex-direction: column;">
         <!-- Buttons injected by JavaScript -->
       </div>
     </div>
@@ -299,7 +299,7 @@
   <header>
     <nav>
       <a class="logo-container" onclick="navigate('home')">
-        <span class="brand" style="color: var(--text-dark);">CUKOOS</span>
+        <span class="brand" style="color: var(--text-dark);">CUKOOS 🍕</span>
       </a>
       
       <!-- Mobile Hamburger Button -->
@@ -353,6 +353,23 @@
       <div class="menu-search-container">
         <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
         <input type="text" id="mainMenuSearch" placeholder="Search for items...">
+      </div>
+
+      <!-- VALUE TREATS & DEALS (Moved to Top) -->
+      <div class="category-wrapper">
+        <h2 class="category-title uppercase-text">🔥 Exclusive Deals & Value Treats</h2>
+        <div class="category-content">
+          <div class="menu-list">
+            <div class="menu-item"><div class="item-info"><span class="item-name">Family Feast 1</span><span class="item-desc">2 XL Pizza + 2 Drinks 1.5Ltr</span></div><div class="item-dots"></div><div class="price-action-wrapper"><span class="item-price">Rs 4399</span><button class="add-to-cart-btn" onclick="addToCart('Family Feast 1', 4399)">+</button></div></div>
+            <div class="menu-item"><div class="item-info"><span class="item-name">Family Feast 2</span><span class="item-desc">1 L Pizza + 1 M Pizza + Drink 1.5Ltr</span></div><div class="item-dots"></div><div class="price-action-wrapper"><span class="item-price">Rs 2999</span><button class="add-to-cart-btn" onclick="addToCart('Family Feast 2', 2999)">+</button></div></div>
+            <div class="menu-item"><div class="item-info"><span class="item-name">Boomer Deal</span><span class="item-desc">1 Boomer Burger, 1 Reg. Fries, 1 Reg. Drink</span></div><div class="item-dots"></div><div class="price-action-wrapper"><span class="item-price">Rs 449</span><button class="add-to-cart-btn" onclick="addToCart('Boomer Deal', 449)">+</button></div></div>
+            <div class="menu-item"><div class="item-info"><span class="item-name">Real Deal</span><span class="item-desc">1 Zinger Burger, 1 Reg. Fries, 1 Reg. Drink</span></div><div class="item-dots"></div><div class="price-action-wrapper"><span class="item-price">Rs 599</span><button class="add-to-cart-btn" onclick="addToCart('Real Deal', 599)">+</button></div></div>
+            <div class="menu-item"><div class="item-info"><span class="item-name">Classic Deal</span><span class="item-desc">10 Pcs Hot Wings, 1 Reg. Drink</span></div><div class="item-dots"></div><div class="price-action-wrapper"><span class="item-price">Rs 599</span><button class="add-to-cart-btn" onclick="addToCart('Classic Deal', 599)">+</button></div></div>
+            <div class="menu-item"><div class="item-info"><span class="item-name">Zingerlicious Deal</span><span class="item-desc">1 Zinger Burger, 1 Reg. Drink</span></div><div class="item-dots"></div><div class="price-action-wrapper"><span class="item-price">Rs 499</span><button class="add-to-cart-btn" onclick="addToCart('Zingerlicious Deal', 499)">+</button></div></div>
+            <div class="menu-item"><div class="item-info"><span class="item-name">Golden Deal</span><span class="item-desc">3Pcs Chicken, 1 Reg. Drink</span></div><div class="item-dots"></div><div class="price-action-wrapper"><span class="item-price">Rs 799</span><button class="add-to-cart-btn" onclick="addToCart('Golden Deal', 799)">+</button></div></div>
+            <div class="menu-item"><div class="item-info"><span class="item-name">Student Deal</span><span class="item-desc">2 Zinger Burgers, 1Pc Chicken, 1 Fries, 2 Drinks</span></div><div class="item-dots"></div><div class="price-action-wrapper"><span class="item-price">Rs 1199</span><button class="add-to-cart-btn" onclick="addToCart('Student Deal', 1199)">+</button></div></div>
+          </div>
+        </div>
       </div>
 
       <!-- PIZZA MENU -->
@@ -424,23 +441,6 @@
             <div class="menu-item"><div class="item-info"><span class="item-name">Oven Baked Wings</span><span class="item-desc">5 Pcs / 10 Pcs</span></div><div class="item-dots"></div><div class="price-action-wrapper"><span class="item-price">349+</span><button class="add-to-cart-btn" onclick="showOptions('Oven Baked Wings', '5 Pcs,349|10 Pcs,699')">+</button></div></div>
             <div class="menu-item"><div class="item-info"><span class="item-name">Hot Wings</span><span class="item-desc">5 Pcs / 10 Pcs</span></div><div class="item-dots"></div><div class="price-action-wrapper"><span class="item-price">349+</span><button class="add-to-cart-btn" onclick="showOptions('Hot Wings', '5 Pcs,349|10 Pcs,599')">+</button></div></div>
             <div class="menu-item"><div class="item-info"><span class="item-name">Chicken Nuggets</span><span class="item-desc">5 Pcs / 10 Pcs</span></div><div class="item-dots"></div><div class="price-action-wrapper"><span class="item-price">299+</span><button class="add-to-cart-btn" onclick="showOptions('Chicken Nuggets', '5 Pcs,299|10 Pcs,499')">+</button></div></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- VALUE TREATS & DEALS -->
-      <div class="category-wrapper">
-        <h2 class="category-title uppercase-text">🔥 Value Treats & Deals</h2>
-        <div class="category-content">
-          <div class="menu-list">
-            <div class="menu-item"><div class="item-info"><span class="item-name">Family Feast 1</span><span class="item-desc">2 XL Pizza + 2 Drinks 1.5Ltr</span></div><div class="item-dots"></div><div class="price-action-wrapper"><span class="item-price">Rs 4399</span><button class="add-to-cart-btn" onclick="addToCart('Family Feast 1', 4399)">+</button></div></div>
-            <div class="menu-item"><div class="item-info"><span class="item-name">Family Feast 2</span><span class="item-desc">1 L Pizza + 1 M Pizza + Drink 1.5Ltr</span></div><div class="item-dots"></div><div class="price-action-wrapper"><span class="item-price">Rs 2999</span><button class="add-to-cart-btn" onclick="addToCart('Family Feast 2', 2999)">+</button></div></div>
-            <div class="menu-item"><div class="item-info"><span class="item-name">Boomer Deal</span><span class="item-desc">1 Boomer Burger, 1 Reg. Fries, 1 Reg. Drink</span></div><div class="item-dots"></div><div class="price-action-wrapper"><span class="item-price">Rs 449</span><button class="add-to-cart-btn" onclick="addToCart('Boomer Deal', 449)">+</button></div></div>
-            <div class="menu-item"><div class="item-info"><span class="item-name">Real Deal</span><span class="item-desc">1 Zinger Burger, 1 Reg. Fries, 1 Reg. Drink</span></div><div class="item-dots"></div><div class="price-action-wrapper"><span class="item-price">Rs 599</span><button class="add-to-cart-btn" onclick="addToCart('Real Deal', 599)">+</button></div></div>
-            <div class="menu-item"><div class="item-info"><span class="item-name">Classic Deal</span><span class="item-desc">10 Pcs Hot Wings, 1 Reg. Drink</span></div><div class="item-dots"></div><div class="price-action-wrapper"><span class="item-price">Rs 599</span><button class="add-to-cart-btn" onclick="addToCart('Classic Deal', 599)">+</button></div></div>
-            <div class="menu-item"><div class="item-info"><span class="item-name">Zingerlicious Deal</span><span class="item-desc">1 Zinger Burger, 1 Reg. Drink</span></div><div class="item-dots"></div><div class="price-action-wrapper"><span class="item-price">Rs 499</span><button class="add-to-cart-btn" onclick="addToCart('Zingerlicious Deal', 499)">+</button></div></div>
-            <div class="menu-item"><div class="item-info"><span class="item-name">Golden Deal</span><span class="item-desc">3Pcs Chicken, 1 Reg. Drink</span></div><div class="item-dots"></div><div class="price-action-wrapper"><span class="item-price">Rs 799</span><button class="add-to-cart-btn" onclick="addToCart('Golden Deal', 799)">+</button></div></div>
-            <div class="menu-item"><div class="item-info"><span class="item-name">Student Deal</span><span class="item-desc">2 Zinger Burgers, 1Pc Chicken, 1 Fries, 2 Drinks</span></div><div class="item-dots"></div><div class="price-action-wrapper"><span class="item-price">Rs 1199</span><button class="add-to-cart-btn" onclick="addToCart('Student Deal', 1199)">+</button></div></div>
           </div>
         </div>
       </div>
