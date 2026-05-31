@@ -61,7 +61,7 @@
     .btn:hover { background: rgba(255,255,255,0.1); transform: translateY(-3px); }
     .btn-transparent { background: transparent; border: 2px solid #fff; }
 
-    /* Highlights & Reviews */
+    /* Highlights */
     .highlights-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; }
     .highlight-card { background: var(--bg-card); padding: 30px; border-radius: 12px; border-top: 5px solid var(--primary-red); box-shadow: 0 6px 20px rgba(0,0,0,0.06); text-align: center; }
     .highlight-icon { font-size: 36px; margin-bottom: 10px; }
@@ -126,7 +126,6 @@
     
     .cart-footer { padding: 20px; border-top: 1px solid #eee; background: #fafafa; }
     .cart-total { display: flex; justify-content: space-between; font-size: 22px; font-weight: 900; color: var(--text-dark); margin-bottom: 15px; }
-    .address-input { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; margin-bottom: 15px; font-family: 'Inter'; outline: none; }
     .checkout-btn { width: 100%; background: var(--primary-red); color: #fff; border: none; padding: 15px; font-size: 18px; font-weight: 700; text-transform: uppercase; border-radius: 8px; cursor: pointer; transition: 0.3s; font-family: 'Inter', sans-serif;}
     .checkout-btn:hover { background: #b71c1c; }
 
@@ -134,16 +133,21 @@
     .toast { position: fixed; bottom: -100px; left: 50%; transform: translateX(-50%); background: var(--text-dark); color: #fff; padding: 15px 30px; border-radius: 50px; font-weight: 600; box-shadow: 0 10px 30px rgba(0,0,0,0.2); transition: bottom 0.4s ease; z-index: 9999; }
     .toast.show { bottom: 30px; }
 
-    /* ---------------- AUTH MODAL ---------------- */
+    /* ---------------- MODALS (Auth, Checkout, Confirmation) ---------------- */
     .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); z-index: 1000; align-items: center; justify-content: center; backdrop-filter: blur(5px); }
     .modal-overlay.active { display: flex; }
     .modal-box { background: #fff; width: 100%; max-width: 400px; padding: 40px 30px; border-radius: 16px; position: relative; }
     .close-modal { position: absolute; top: 15px; right: 20px; font-size: 24px; color: #999; cursor: pointer; background: none; border: none; }
     .modal-title { font-family: 'Rokkitt', serif; font-size: 32px; color: var(--primary-red); text-align: center; margin-bottom: 5px; }
     .modal-subtitle { text-align: center; color: var(--text-muted); font-size: 14px; margin-bottom: 20px; }
+    
     .form-group { margin-bottom: 15px; }
-    .form-group input { width: 100%; padding: 12px 15px; border: 1px solid #ddd; border-radius: 8px; font-family: 'Inter', sans-serif; outline: none; }
-    .btn-full { width: 100%; background: var(--primary-red); color: #fff; padding: 12px; border: none; border-radius: 8px; font-weight: 700; font-size: 16px; cursor: pointer; margin-top: 10px; font-family: 'Inter', sans-serif; }
+    .form-group input, .form-group textarea { width: 100%; padding: 12px 15px; border: 1px solid #ddd; border-radius: 8px; font-family: 'Inter', sans-serif; outline: none; transition: 0.3s; }
+    .form-group input:focus, .form-group textarea:focus { border-color: var(--secondary-gold); box-shadow: 0 0 0 3px rgba(245, 176, 65, 0.2); }
+    
+    .btn-full { width: 100%; background: var(--primary-red); color: #fff; padding: 12px; border: none; border-radius: 8px; font-weight: 700; font-size: 16px; cursor: pointer; margin-top: 10px; font-family: 'Inter', sans-serif; transition: 0.3s; }
+    .btn-full:hover { background: #b71c1c; }
+    
     .modal-footer { text-align: center; margin-top: 20px; font-size: 14px; color: var(--text-muted); }
     .modal-footer span { color: var(--primary-red); font-weight: 600; cursor: pointer; }
 
@@ -196,6 +200,32 @@
     </div>
   </div>
 
+  <div class="modal-overlay" id="checkoutModal">
+    <div class="modal-box">
+      <button class="close-modal" id="closeCheckoutBtn">&times;</button>
+      <h2 class="modal-title">Delivery Details</h2>
+      <p class="modal-subtitle">Where should we send your hot food?</p>
+      <form id="checkoutForm">
+        <div class="form-group">
+          <input type="tel" id="customerPhone" placeholder="Phone Number (e.g. 03XX-XXXXXXX)" required>
+        </div>
+        <div class="form-group">
+          <textarea id="deliveryAddress" placeholder="Complete Delivery Address..." rows="3" style="resize: vertical;" required></textarea>
+        </div>
+        <button type="submit" class="btn-full" id="confirmOrderBtn">Place Order</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="confirmationModal">
+    <div class="modal-box" style="text-align: center;">
+      <div style="font-size: 60px; margin-bottom: 10px;">🎉</div>
+      <h2 class="modal-title">Order Confirmed!</h2>
+      <p class="modal-subtitle">Your delicious food is being prepared and will be delivered to your doorstep soon.</p>
+      <button class="btn-full" id="closeConfirmationBtn">Back to Menu</button>
+    </div>
+  </div>
+
   <div class="cart-sidebar" id="cartSidebar">
     <div class="cart-header">
       <h2>Your Order</h2>
@@ -209,8 +239,7 @@
         <span>Total:</span>
         <span id="cartTotalDisplay">Rs 0</span>
       </div>
-      <input type="text" id="deliveryAddress" class="address-input" placeholder="Enter Delivery Address...">
-      <button class="checkout-btn" id="checkoutBtn">Checkout Securely</button>
+      <button class="checkout-btn" id="proceedCheckoutBtn">Proceed to Checkout</button>
     </div>
   </div>
 
@@ -537,7 +566,7 @@
       } catch (error) { showToast("Invalid credentials"); }
     });
 
-    // Shopping Cart & Database Logic
+    // Shopping Cart Logic
     let cart = [];
 
     window.addToCart = function(name, price) {
@@ -586,7 +615,18 @@
     document.getElementById('openCartFloatBtn').addEventListener('click', () => cartSidebar.classList.add('open'));
     document.getElementById('closeCartBtn').addEventListener('click', () => cartSidebar.classList.remove('open'));
 
-    document.getElementById('checkoutBtn').addEventListener('click', async () => {
+    // NEW CHECKOUT FLOW
+    const checkoutModal = document.getElementById('checkoutModal');
+    const confirmationModal = document.getElementById('confirmationModal');
+
+    document.getElementById('closeCheckoutBtn').addEventListener('click', () => checkoutModal.classList.remove('active'));
+    document.getElementById('closeConfirmationBtn').addEventListener('click', () => {
+      confirmationModal.classList.remove('active');
+      navigate('menu');
+    });
+
+    // 1. Proceed to Checkout Button
+    document.getElementById('proceedCheckoutBtn').addEventListener('click', () => {
       if (cart.length === 0) return showToast("Your cart is empty!");
       
       if (!auth.currentUser) {
@@ -596,33 +636,54 @@
         return;
       }
 
+      // If logged in and cart has items, open Delivery Details Modal
+      cartSidebar.classList.remove('open');
+      checkoutModal.classList.add('active');
+    });
+
+    // 2. Final Submit Order Button
+    document.getElementById('checkoutForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const phone = document.getElementById('customerPhone').value;
       const address = document.getElementById('deliveryAddress').value;
-      if (!address) return showToast("Please enter a delivery address.");
+
+      document.getElementById('confirmOrderBtn').innerText = "Processing...";
 
       try {
         const orderData = {
           userId: auth.currentUser.uid,
           userEmail: auth.currentUser.email,
+          customerPhone: phone,
+          deliveryAddress: address,
           items: cart,
           totalPrice: cart.reduce((sum, item) => sum + item.price, 0),
-          deliveryAddress: address,
           status: "Pending",
           timestamp: serverTimestamp()
         };
 
+        // Save to Firebase
         await addDoc(collection(db, "orders"), orderData);
         
+        // Success cleanup
         cart = [];
+        document.getElementById('customerPhone').value = '';
         document.getElementById('deliveryAddress').value = '';
         updateCartUI();
-        cartSidebar.classList.remove('open');
-        showToast("Order Placed Successfully!");
+        
+        document.getElementById('confirmOrderBtn').innerText = "Place Order";
+        checkoutModal.classList.remove('active');
+        
+        // Show Confirmation
+        confirmationModal.classList.add('active');
         
       } catch (e) {
         console.error(e);
+        document.getElementById('confirmOrderBtn').innerText = "Place Order";
         showToast("Error connecting to database.");
       }
     });
+
   </script>
 
 </body>
