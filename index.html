@@ -85,6 +85,7 @@
     /* Menu List */
     .menu-header { background: var(--primary-red); color: #fff; text-align: center; padding: 40px 20px; margin-bottom: 30px; }
     .menu-header h1 { font-size: clamp(32px, 5vw, 48px); color: var(--secondary-gold); text-transform: uppercase; }
+    .menu-header p { font-size: 16px; opacity: 0.9; }
     
     .category-wrapper { margin-top: 40px; }
     .category-title { font-size: clamp(28px, 4vw, 36px); color: var(--primary-red); margin-bottom: 20px; border-bottom: 3px solid var(--secondary-gold); display: inline-block; padding-right: 20px; }
@@ -213,18 +214,22 @@
 </head>
 <body>
 
+  <!-- Toast Notification -->
   <div id="toast" class="toast">Action successful!</div>
 
+  <!-- Item Size/Options Modal -->
   <div class="modal-overlay" id="optionsModal">
     <div class="modal-box">
       <button class="close-modal" id="closeOptionsBtn">&times;</button>
       <h2 class="modal-title" id="optionsItemName">Item Name</h2>
       <p class="modal-subtitle">Choose your size or variation</p>
       <div id="optionsContainer" style="display: flex; flex-direction: column; gap: 12px;">
-        </div>
+        <!-- Buttons injected by JavaScript -->
+      </div>
     </div>
   </div>
 
+  <!-- Auth Modal -->
   <div class="modal-overlay" id="authModal">
     <div class="modal-box">
       <button class="close-modal" id="closeModalBtn">&times;</button>
@@ -251,6 +256,7 @@
     </div>
   </div>
 
+  <!-- Checkout Information Modal -->
   <div class="modal-overlay" id="checkoutModal">
     <div class="modal-box">
       <button class="close-modal" id="closeCheckoutBtn">&times;</button>
@@ -264,6 +270,7 @@
     </div>
   </div>
 
+  <!-- Order Confirmation Modal -->
   <div class="modal-overlay" id="confirmationModal">
     <div class="modal-box" style="text-align: center; padding-top: 40px;">
       <div style="font-size: 70px; margin-bottom: 10px;">🎉</div>
@@ -273,6 +280,7 @@
     </div>
   </div>
 
+  <!-- Cart Sidebar -->
   <div class="cart-sidebar" id="cartSidebar">
     <div class="cart-header">
       <h2>Your Order</h2>
@@ -287,6 +295,7 @@
     </div>
   </div>
 
+  <!-- Navigation -->
   <header>
     <nav>
       <a class="logo-container" onclick="navigate('home')">
@@ -294,10 +303,12 @@
         <span class="brand">CRUST HOUSE</span>
       </a>
       
+      <!-- Mobile Hamburger Button -->
       <button class="menu-toggle" id="mobileMenuBtn">
         <svg viewBox="0 0 24 24"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
       </button>
 
+      <!-- Nav Links (Slides on mobile) -->
       <div class="nav-right" id="navRight">
         <button class="close-nav" id="closeMobileNav">&times;</button>
         <ul class="nav-links">
@@ -311,6 +322,7 @@
     </nav>
   </header>
 
+  <!-- ==================== HOME PAGE ==================== -->
   <main id="home" class="page-section active-page">
     <section class="hero">
       <div class="container">
@@ -332,21 +344,26 @@
     </section>
   </main>
 
+  <!-- ==================== MENU PAGE ==================== -->
   <main id="menu" class="page-section">
-    <div class="menu-header"><h1>Our Complete Menu</h1><p>Click the [+] button to customize and add items to your cart.</p></div>
+    <div class="menu-header">
+      <h1>Our Complete Menu</h1>
+      <p>Freshly prepared to order. Select your items to begin.</p>
+    </div>
     <div class="container">
       <div class="menu-search-container">
         <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
         <input type="text" id="mainMenuSearch" placeholder="Search for items...">
       </div>
 
+      <!-- PIZZAS -->
       <div class="category-wrapper">
         <h2 class="category-title uppercase-text">🍕 Premium Pizzas</h2>
         <div class="category-content">
           <div class="menu-list">
-            <div class="menu-item"><div class="item-info"><span class="item-name">Special Crust House Pizza</span></div><div class="item-dots"></div><div class="price-action-wrapper"><span class="item-price">Rs 1500</span><button class="add-to-cart-btn" onclick="addToCart('Special Crust Pizza', 1500)">+</button></div></div>
-            <div class="menu-item"><div class="item-info"><span class="item-name">Fajita Pizza</span></div><div class="item-dots"></div><div class="price-action-wrapper"><span class="item-price">Rs 1450</span><button class="add-to-cart-btn" onclick="addToCart('Fajita Pizza', 1450)">+</button></div></div>
-            
+            <!-- All Pizzas Now Have Options! -->
+            <div class="menu-item"><div class="item-info"><span class="item-name">Special Crust House Pizza</span><span class="item-desc">M / L / XL</span></div><div class="item-dots"></div><div class="price-action-wrapper"><span class="item-price">1500+</span><button class="add-to-cart-btn" onclick="showOptions('Special Crust Pizza', 'Medium,1500|Large,2000|Extra Large,2500')">+</button></div></div>
+            <div class="menu-item"><div class="item-info"><span class="item-name">Fajita Pizza</span><span class="item-desc">M / L / XL</span></div><div class="item-dots"></div><div class="price-action-wrapper"><span class="item-price">1450+</span><button class="add-to-cart-btn" onclick="showOptions('Fajita Pizza', 'Medium,1450|Large,1950|Extra Large,2450')">+</button></div></div>
             <div class="menu-item"><div class="item-info"><span class="item-name">Cheese Stuffer Pizza</span><span class="item-desc">M / L / XL</span></div><div class="item-dots"></div><div class="price-action-wrapper"><span class="item-price">1400+</span><button class="add-to-cart-btn" onclick="showOptions('Cheese Stuffer Pizza', 'Medium,1400|Large,1900|Extra Large,2400')">+</button></div></div>
             <div class="menu-item"><div class="item-info"><span class="item-name">Malai Boti Pizza</span><span class="item-desc">M / L / XL</span></div><div class="item-dots"></div><div class="price-action-wrapper"><span class="item-price">1200+</span><button class="add-to-cart-btn" onclick="showOptions('Malai Boti Pizza', 'Medium,1200|Large,1700|Extra Large,2200')">+</button></div></div>
             <div class="menu-item"><div class="item-info"><span class="item-name">Bihari Boti Pizza</span><span class="item-desc">M / L / XL</span></div><div class="item-dots"></div><div class="price-action-wrapper"><span class="item-price">1200+</span><button class="add-to-cart-btn" onclick="showOptions('Bihari Boti Pizza', 'Medium,1200|Large,1700|Extra Large,2200')">+</button></div></div>
@@ -357,6 +374,7 @@
         </div>
       </div>
 
+      <!-- BURGERS -->
       <div class="category-wrapper">
         <h2 class="category-title uppercase-text">🍔 Burger Zone</h2>
         <div class="category-content">
@@ -370,6 +388,7 @@
         </div>
       </div>
 
+      <!-- PASTA -->
       <div class="category-wrapper">
         <h2 class="category-title uppercase-text">🍝 Baked Pasta</h2>
         <div class="category-content">
@@ -381,6 +400,7 @@
         </div>
       </div>
 
+      <!-- SANDWICHES & ROLLS -->
       <div class="category-wrapper">
         <h2 class="category-title uppercase-text">🥪 Sandwiches & 🌯 Rolls</h2>
         <div class="category-content">
@@ -397,6 +417,7 @@
         </div>
       </div>
 
+      <!-- APPETIZERS -->
       <div class="category-wrapper">
         <h2 class="category-title uppercase-text">🍗 Appetizers & Wings</h2>
         <div class="category-content">
@@ -417,6 +438,7 @@
         </div>
       </div>
       
+      <!-- DRINKS -->
       <div class="category-wrapper">
         <h2 class="category-title uppercase-text">🥤 Drinks</h2>
         <div class="category-content">
@@ -431,6 +453,7 @@
     </div>
   </main>
 
+  <!-- ==================== ABOUT US PAGE ==================== -->
   <main id="about" class="page-section">
     <div class="container about-container">
       <h1 class="about-title">The Crust House Story</h1>
@@ -439,6 +462,7 @@
     </div>
   </main>
 
+  <!-- ==================== PRIVATE ADMIN DASHBOARD ==================== -->
   <main id="admin" class="page-section">
     <div class="menu-header" style="background: #2c3e50;">
       <h1>Kitchen Order Panel</h1>
@@ -451,6 +475,7 @@
     </div>
   </main>
 
+  <!-- Floating Controls -->
   <div class="floating-controls">
     <button class="float-btn" id="openCartFloatBtn" title="View Cart">
       <div class="cart-badge" id="cartBadge">0</div>
@@ -469,6 +494,7 @@
     </div>
   </footer>
 
+  <!-- ==================== JAVASCRIPT ==================== -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
     import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
@@ -587,16 +613,15 @@
       catch (err) { showToast("Invalid credentials"); }
     });
 
-    // NEW: Options Selection Modal Logic
+    // Options Selection Modal Logic
     const optionsModal = document.getElementById('optionsModal');
     document.getElementById('closeOptionsBtn').addEventListener('click', () => toggleModal(optionsModal, false));
 
     window.showOptions = function(itemName, optionsString) {
       document.getElementById('optionsItemName').innerText = itemName;
       const container = document.getElementById('optionsContainer');
-      container.innerHTML = ''; // Clear previous options
+      container.innerHTML = ''; 
       
-      // optionsString format expected: "Medium,1400|Large,1900|Extra Large,2400"
       const optionsArray = optionsString.split('|');
       
       optionsArray.forEach(opt => {
