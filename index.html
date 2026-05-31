@@ -410,12 +410,20 @@
     .status-delivered { background:#27ae60; }
     .status-cancelled { background:var(--red); }
     .order-items-list { background:#fafaf8; padding:12px; border-radius:var(--radius-sm); margin:12px 0; font-size:14px; line-height:1.8; }
-    .admin-actions { display:flex; gap:10px; margin-top:16px; }
+    .admin-actions { display:flex; gap:10px; margin-top:16px; flex-wrap: wrap;}
     .admin-btn { flex:1; padding:12px; border:none; border-radius:var(--radius-sm); font-weight:700; font-size:13px; cursor:pointer; text-transform:uppercase; transition:all var(--transition); letter-spacing:0.04em; }
     .btn-deliver { background:#e8f8ef; color:#27ae60; }
     .btn-deliver:hover { background:#27ae60; color:#fff; }
     .btn-cancel { background:#fce8e8; color:var(--red); }
     .btn-cancel:hover { background:var(--red); color:#fff; }
+    .btn-print { background:#eef2f9; color:#3b82f6; flex-basis: 100%; margin-top: 8px;}
+    .btn-print:hover { background:#3b82f6; color:#fff; }
+    .btn-whatsapp { background:#e8f8ef; color:#25D366; flex-basis: 100%; margin-top: 8px; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; box-sizing: border-box;}
+    .btn-whatsapp:hover { background:#25D366; color:#fff; }
+    .admin-eta-wrap { display: flex; gap: 8px; width: 100%; margin-top: 10px; }
+    .admin-eta-wrap input { flex: 1; padding: 10px; border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 13px; font-family:'DM Sans',sans-serif; }
+    .admin-eta-wrap button { padding: 10px 14px; background: var(--charcoal); color: #fff; border: none; border-radius: var(--radius-sm); font-weight: bold; cursor: pointer; font-size: 12px; transition: all var(--transition);}
+    .admin-eta-wrap button:hover { background: var(--gold); }
 
     /* ─── ABOUT ─── */
     .about-container { max-width:780px; margin:0 auto; padding:80px 24px; }
@@ -552,23 +560,30 @@
       margin-top:8px; display:inline-block;
     }
     .order-time-badge.expiring-soon { background:#fff3cd; color:#b8820a; font-weight:700; }
+    .order-eta-badge {
+      font-size:11px; color:#fff; font-weight:600; background:var(--gold);
+      padding:3px 10px; border-radius:50px; margin-top:8px; display:inline-block; margin-left:5px;
+    }
 
-    .admin-actions { display:flex; gap:10px; margin-top:16px; }
-    .admin-btn { flex:1; padding:12px; border:none; border-radius:var(--radius-sm); font-weight:700; font-size:13px; cursor:pointer; text-transform:uppercase; transition:all var(--transition); letter-spacing:0.04em; font-family:'DM Sans',sans-serif; }
-    .btn-deliver { background:#e8f8ef; color:#27ae60; }
-    .btn-deliver:hover { background:#27ae60; color:#fff; }
-    .btn-cancel { background:#fce8e8; color:var(--red); }
-    .btn-cancel:hover { background:var(--red); color:#fff; }
     .btn-delete-manual { background:#f5f0e8; color:var(--muted); font-size:12px; padding:8px; margin-top:8px; width:100%; border:none; border-radius:var(--radius-sm); cursor:pointer; font-family:'DM Sans',sans-serif; font-weight:600; transition:all var(--transition); }
     .btn-delete-manual:hover { background:var(--muted); color:#fff; }
+
+    /* ─── SALES CHART ─── */
+    .admin-chart-container { background: #fff; padding: 24px; border-radius: var(--radius-lg); border: 1px solid var(--border); margin-bottom: 36px; box-shadow: var(--shadow-sm); }
+    .admin-chart-container h3 { font-size: 20px; color: var(--charcoal); margin-bottom: 20px; }
+    .sales-chart { display: flex; align-items: flex-end; justify-content: space-around; gap: 10px; height: 180px; padding-bottom: 10px; border-bottom: 2px solid var(--cream); margin-top: 10px; }
+    .chart-bar-wrap { display: flex; flex-direction: column; align-items: center; flex: 1; height: 100%; justify-content: flex-end; }
+    .chart-bar { background: linear-gradient(0deg, var(--red-dark), var(--red)); width: 100%; max-width: 40px; border-radius: 6px 6px 0 0; transition: height 0.8s cubic-bezier(0.4,0,0.2,1); min-height: 4px; box-shadow: 0 4px 10px rgba(200,25,26,0.2); }
+    .chart-label { font-size: 12px; margin-top: 8px; color: var(--muted); font-weight: 600; }
+    .chart-val { font-size: 11px; font-weight: bold; margin-bottom: 6px; color: var(--charcoal); }
   </style>
 </head>
 <body>
 
-  <!-- Toast -->
+  <audio id="orderDing" src="https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3" preload="auto"></audio>
+
   <div id="toast" class="toast"></div>
 
-  <!-- Options Modal -->
   <div class="modal-overlay" id="optionsModal">
     <div class="modal-box">
       <button class="close-modal" id="closeOptionsBtn">&times;</button>
@@ -578,7 +593,6 @@
     </div>
   </div>
 
-  <!-- Auth Modal -->
   <div class="modal-overlay" id="authModal">
     <div class="modal-box">
       <button class="close-modal" id="closeModalBtn">&times;</button>
@@ -605,7 +619,6 @@
     </div>
   </div>
 
-  <!-- Checkout Modal -->
   <div class="modal-overlay" id="checkoutModal">
     <div class="modal-box">
       <button class="close-modal" id="closeCheckoutBtn">&times;</button>
@@ -619,17 +632,15 @@
     </div>
   </div>
 
-  <!-- Confirmation Modal -->
   <div class="modal-overlay" id="confirmationModal">
     <div class="modal-box" style="text-align:center; padding-top:44px;">
       <div style="font-size:68px; margin-bottom:12px; animation:float 3s ease-in-out infinite;">🎉</div>
       <h2 class="modal-title">Order Confirmed!</h2>
-      <p class="modal-subtitle" style="font-size:16px; margin-bottom:32px;">Your food is being prepared and will reach your doorstep soon.</p>
+      <p class="modal-subtitle" style="font-size:16px; margin-bottom:32px;">Your food is being prepared and will reach your doorstep soon. You can track it in the 'My Orders' tab.</p>
       <button class="btn-full" id="closeConfirmationBtn">Back to Menu</button>
     </div>
   </div>
 
-  <!-- Cart Sidebar -->
   <div class="cart-sidebar" id="cartSidebar">
     <div class="cart-header">
       <h2>Your Order</h2>
@@ -644,7 +655,6 @@
     </div>
   </div>
 
-  <!-- HEADER -->
   <header id="mainHeader">
     <nav>
       <a class="logo-container" onclick="navigate('home')">
@@ -660,6 +670,7 @@
           <li><a class="nav-link active" id="nav-home" onclick="navigate('home')">Home</a></li>
           <li><a class="nav-link" id="nav-menu" onclick="navigate('menu')">Menu</a></li>
           <li><a class="nav-link" id="nav-about" onclick="navigate('about')">About</a></li>
+          <li id="myOrdersLink" style="display:none;"><a class="nav-link" id="nav-my-orders" onclick="navigate('my-orders')">My Orders</a></li>
           <li id="adminMenuLink" style="display:none;"><a class="nav-link" id="nav-admin" onclick="navigate('admin')" style="color:var(--gold);">📋 Admin</a></li>
         </ul>
         <button class="btn-outline" id="authButton">Sign In</button>
@@ -667,7 +678,6 @@
     </nav>
   </header>
 
-  <!-- ===== HOME PAGE ===== -->
   <main id="home" class="page-section active-page">
     <section class="hero">
       <div class="hero-bg"></div>
@@ -722,7 +732,6 @@
     </section>
   </main>
 
-  <!-- ===== MENU PAGE ===== -->
   <main id="menu" class="page-section">
     <div class="menu-header">
       <h1>Our Complete Menu</h1>
@@ -734,7 +743,6 @@
         <input type="text" id="mainMenuSearch" placeholder="Search menu items...">
       </div>
 
-      <!-- VALUE DEALS -->
       <div class="category-wrapper reveal">
         <h2 class="category-title">🔥 Exclusive Deals & Value Treats</h2>
         <div class="menu-list">
@@ -749,7 +757,6 @@
         </div>
       </div>
 
-      <!-- PIZZA -->
       <div class="category-wrapper reveal">
         <h2 class="category-title">🍕 Pizza Menu</h2>
         <div class="menu-list">
@@ -765,7 +772,6 @@
         </div>
       </div>
 
-      <!-- CUKOOS SPECIAL -->
       <div class="category-wrapper reveal">
         <h2 class="category-title">👑 Cukoos Special Pizzas</h2>
         <div class="menu-list">
@@ -779,7 +785,6 @@
         </div>
       </div>
 
-      <!-- BURGERS & MORE -->
       <div class="category-wrapper reveal">
         <h2 class="category-title">🍔 Burgers & Classic Sides</h2>
         <div class="menu-list">
@@ -799,7 +804,6 @@
         </div>
       </div>
 
-      <!-- FRIED CHICKEN -->
       <div class="category-wrapper reveal">
         <h2 class="category-title">🍗 Fried Chicken & Wings</h2>
         <div class="menu-list">
@@ -814,7 +818,6 @@
         </div>
       </div>
 
-      <!-- PASTA -->
       <div class="category-wrapper reveal">
         <h2 class="category-title">🍝 Pasta & Sandwiches</h2>
         <div class="menu-list">
@@ -830,7 +833,6 @@
         </div>
       </div>
 
-      <!-- SNACKS -->
       <div class="category-wrapper reveal">
         <h2 class="category-title">🍟 Snacks & Fries</h2>
         <div class="menu-list">
@@ -844,7 +846,6 @@
         </div>
       </div>
 
-      <!-- BEVERAGES -->
       <div class="category-wrapper reveal" style="margin-bottom:60px;">
         <h2 class="category-title">🥤 Shakes, Juices & Beverages</h2>
         <div class="menu-list">
@@ -863,7 +864,18 @@
     </div>
   </main>
 
-  <!-- ===== ABOUT PAGE ===== -->
+  <main id="my-orders" class="page-section">
+    <div class="menu-header">
+      <h1 style="color:var(--gold-light);">My Orders</h1>
+      <p>Track your real-time order status.</p>
+    </div>
+    <div class="container" style="padding-top:36px; padding-bottom:60px;">
+      <div class="admin-grid" id="customerOrdersGrid">
+        <p class="admin-empty-msg">You haven't placed any orders yet. 🍕</p>
+      </div>
+    </div>
+  </main>
+
   <main id="about" class="page-section">
     <div class="container about-container">
       <h1 class="about-title">The <span>Cukoos</span><br>Story</h1>
@@ -872,7 +884,6 @@
     </div>
   </main>
 
-  <!-- ===== ADMIN PANEL ===== -->
   <main id="admin" class="page-section">
     <div class="menu-header">
       <h1 style="color:var(--gold-light);">Kitchen Order Panel</h1>
@@ -881,7 +892,12 @@
 
     <div class="container" style="padding-top:36px; padding-bottom:60px;">
 
-      <!-- Stats Row -->
+      <div class="admin-chart-container">
+        <h3>📊 7-Day Revenue</h3>
+        <div id="salesChart" class="sales-chart">
+          </div>
+      </div>
+
       <div class="admin-stats-row" id="adminStatsRow">
         <div class="admin-stat-card" id="statPending">
           <div class="admin-stat-num" id="countPending">0</div>
@@ -901,7 +917,6 @@
         </div>
       </div>
 
-      <!-- Tab Bar -->
       <div class="admin-tab-bar">
         <button class="admin-tab active" data-tab="pending" onclick="switchTab('pending')">
           🔴 Pending <span class="tab-count" id="tab-count-pending">0</span>
@@ -917,7 +932,6 @@
         </button>
       </div>
 
-      <!-- Order Grids per Tab -->
       <div id="tab-panel-pending" class="admin-tab-panel active-tab-panel">
         <div class="admin-grid" id="grid-pending">
           <p class="admin-empty-msg">No pending orders right now. 🎉</p>
@@ -942,7 +956,6 @@
     </div>
   </main>
 
-  <!-- Floating Controls -->
   <div class="floating-controls">
     <button class="float-btn" id="openCartFloatBtn" title="View Cart">
       <div class="cart-badge" id="cartBadge">0</div>
@@ -953,7 +966,6 @@
     </button>
   </div>
 
-  <!-- FOOTER -->
   <footer>
     <div class="footer-inner">
       <div class="footer-brand">CUKOOS 🍕</div>
@@ -988,11 +1000,10 @@
     </div>
   </footer>
 
-  <!-- JAVASCRIPT -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
     import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
-    import { getFirestore, collection, addDoc, doc, updateDoc, deleteDoc, onSnapshot, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+    import { getFirestore, collection, addDoc, doc, updateDoc, deleteDoc, onSnapshot, query, orderBy, where, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyBz2iocPJ4ty7NQxZ4zSbSsKWeA9C5LWCs",
@@ -1007,6 +1018,10 @@
     const auth = getAuth(app);
     const db = getFirestore(app);
     const ADMIN_EMAIL = "youradmin@email.com";
+    
+    // Globals for external actions
+    window.globalOrders = {};
+    let customerUnsubscribe = null;
 
     /* ── Scroll Reveal ── */
     const observer = new IntersectionObserver((entries) => {
@@ -1080,6 +1095,7 @@
     const authModal = document.getElementById('authModal');
     const authButton = document.getElementById('authButton');
     const adminMenuLink = document.getElementById('adminMenuLink');
+    const myOrdersLink = document.getElementById('myOrdersLink');
 
     document.getElementById('closeModalBtn').addEventListener('click', () => toggleModal(authModal, false));
     document.getElementById('showRegister').addEventListener('click', () => { document.getElementById('loginView').style.display='none'; document.getElementById('registerView').style.display='block'; });
@@ -1095,10 +1111,14 @@
       if (user) {
         authButton.innerText = "Sign Out";
         toggleModal(authModal, false);
+        myOrdersLink.style.display = "block";
         adminMenuLink.style.display = user.email === ADMIN_EMAIL ? "block" : "none";
+        fetchCustomerOrders(user.uid);
       } else {
         authButton.innerText = "Sign In";
         adminMenuLink.style.display = "none";
+        myOrdersLink.style.display = "none";
+        if(customerUnsubscribe) customerUnsubscribe();
       }
     });
 
@@ -1173,7 +1193,7 @@
     const confirmationModal = document.getElementById('confirmationModal');
 
     document.getElementById('closeCheckoutBtn').addEventListener('click', () => toggleModal(checkoutModal, false));
-    document.getElementById('closeConfirmationBtn').addEventListener('click', () => { toggleModal(confirmationModal, false); navigate('menu'); });
+    document.getElementById('closeConfirmationBtn').addEventListener('click', () => { toggleModal(confirmationModal, false); navigate('my-orders'); });
 
     document.getElementById('proceedCheckoutBtn').addEventListener('click', () => {
       if (!cart.length) return showToast("Your cart is empty!");
@@ -1192,7 +1212,7 @@
           customerPhone: document.getElementById('customerPhone').value,
           deliveryAddress: document.getElementById('deliveryAddress').value,
           items: cart, totalPrice: cart.reduce((s, i) => s + i.price, 0),
-          status: "Pending", timestamp: serverTimestamp()
+          status: "Pending", eta: "", timestamp: serverTimestamp()
         });
         cart = [];
         document.getElementById('customerPhone').value = '';
@@ -1204,8 +1224,39 @@
       } catch (err) { showToast("Error placing order. Try again."); btn.innerText = "Place My Order"; btn.disabled = false; }
     });
 
-    /* ── Admin Panel — Tabbed + Auto-Delete ── */
+    /* ── Customer Orders Tracking ── */
+    function fetchCustomerOrders(uid) {
+      if(customerUnsubscribe) customerUnsubscribe();
+      const q = query(collection(db, "orders"), where("userId", "==", uid), orderBy("timestamp", "desc"));
+      customerUnsubscribe = onSnapshot(q, (snapshot) => {
+        const grid = document.getElementById('customerOrdersGrid');
+        if (snapshot.empty) {
+          grid.innerHTML = '<p class="admin-empty-msg">You haven\'t placed any orders yet. 🍕</p>';
+          return;
+        }
+        let html = '';
+        snapshot.forEach(docSnap => {
+          const order = docSnap.data();
+          const statusClass = order.status.toLowerCase();
+          const timeStr = formatTime(order.timestamp);
+          const itemsSummary = order.items ? order.items.map(i => `• ${i.name}`).join('<br>') : '';
+          const etaBadge = order.eta ? `<span class="order-eta-badge">⏳ ETA: ${order.eta}</span>` : '';
+          
+          html += `<div class="order-card ${statusClass}-card">
+            <div class="order-card-header">
+              <span class="order-email" style="font-size:16px;">Order Summary</span>
+              <span class="status-badge status-${statusClass}">${order.status}</span>
+            </div>
+            <span class="order-time-badge">🕒 ${timeStr}</span> ${etaBadge}
+            <div class="order-items-list">${itemsSummary}</div>
+            <p style="font-size:16px; color:var(--red); font-weight:700;">Total: Rs ${order.totalPrice}</p>
+          </div>`;
+        });
+        grid.innerHTML = html;
+      });
+    }
 
+    /* ── Admin Panel — Tabbed + Auto-Delete + Charts + ETA + Print + Sound ── */
     let currentTab = 'pending';
     window.switchTab = function(tab) {
       currentTab = tab;
@@ -1226,6 +1277,42 @@
       return hoursLeft < 4 && hoursLeft > 0;
     }
 
+    window.updateETA = async function(id) {
+      const input = document.getElementById('eta-' + id);
+      if(!input.value) return;
+      await updateDoc(doc(db, "orders", id), { eta: input.value });
+      showToast('ETA Updated');
+    }
+
+    window.printOrder = function(id) {
+      const order = window.globalOrders[id];
+      if(!order) return;
+      const win = window.open('', '_blank');
+      const itemsHtml = order.items.map(i => `<div style="display:flex; justify-content:space-between; margin-bottom:5px;"><span>${i.name}</span><span>Rs ${i.price}</span></div>`).join('');
+      const timeStr = formatTime(order.timestamp);
+      
+      win.document.write(`
+        <html><head><title>Receipt - Cukoos</title>
+        <style>body{font-family:monospace; padding:20px; max-width:300px; margin:0 auto; color:#000;}</style>
+        </head><body>
+          <h2 style="text-align:center; margin-bottom:5px;">CUKOOS PIZZA</h2>
+          <p style="text-align:center; font-size:12px; margin-top:0;">Bharakahu, Isb</p>
+          <hr style="border-top:1px dashed #000;">
+          <p><strong>Order ID:</strong><br>${id}</p>
+          <p><strong>Time:</strong><br>${timeStr}</p>
+          <p><strong>Customer:</strong><br>${order.userEmail}</p>
+          <p><strong>Phone:</strong><br>${order.customerPhone}</p>
+          <p><strong>Address:</strong><br>${order.deliveryAddress}</p>
+          <hr style="border-top:1px dashed #000;">
+          ${itemsHtml}
+          <hr style="border-top:1px dashed #000;">
+          <h3 style="display:flex; justify-content:space-between;"><span>Total</span><span>Rs ${order.totalPrice}</span></h3>
+          <p style="text-align:center; font-size:12px; margin-top:20px;">Thank you for ordering!</p>
+          <script>window.print(); setTimeout(() => window.close(), 500);<\/script>
+        </body></html>
+      `);
+    };
+
     function buildOrderCard(docSnap, order) {
       const id = docSnap.id;
       const statusClass = order.status.toLowerCase();
@@ -1234,6 +1321,12 @@
       const expiring = isExpiringSoon(order.timestamp);
       const timeBadgeClass = expiring ? 'order-time-badge expiring-soon' : 'order-time-badge';
       const expiringWarning = expiring ? ' ⚠️ Deletes soon' : '';
+      const etaBadge = order.eta ? `<span class="order-eta-badge">ETA: ${order.eta}</span>` : '';
+
+      // Format WhatsApp Phone
+      let waPhone = (order.customerPhone || '').replace(/\D/g, '');
+      if (waPhone.startsWith('0')) waPhone = '92' + waPhone.substring(1);
+      const waMsg = encodeURIComponent(`Hello! This is Cukoos Pizza. Your order for Rs ${order.totalPrice} is currently: ${order.status}.`);
 
       return `<div class="order-card ${statusClass}-card" id="card-${id}">
         <div>
@@ -1241,63 +1334,99 @@
             <span class="order-email">${order.userEmail}</span>
             <span class="status-badge status-${statusClass}">${order.status}</span>
           </div>
-          <span class="${timeBadgeClass}">🕒 ${timeStr}${expiringWarning}</span>
+          <span class="${timeBadgeClass}">🕒 ${timeStr}${expiringWarning}</span> ${etaBadge}
           <p style="font-size:13px; margin:10px 0 3px; font-weight:600;">📞 ${order.customerPhone || 'N/A'}</p>
           <p style="font-size:13px; margin:0 0 10px; color:var(--muted);">📍 ${order.deliveryAddress || 'N/A'}</p>
           <div class="order-items-list" style="font-size:13px;">${itemsSummary}</div>
           <p style="font-size:17px; color:var(--red); font-weight:700; margin-top:10px;">Total: Rs ${order.totalPrice}</p>
         </div>
-        ${order.status === 'Pending' ? `<div class="admin-actions">
-          <button class="admin-btn btn-deliver" data-id="${id}">✔ Delivered</button>
-          <button class="admin-btn btn-cancel" data-id="${id}">✖ Cancel</button>
-        </div>` : ''}
+        ${order.status === 'Pending' ? `
+          <div class="admin-eta-wrap">
+            <input type="text" id="eta-${id}" placeholder="Set ETA (e.g., 30 mins)">
+            <button onclick="updateETA('${id}')">Set</button>
+          </div>
+          <div class="admin-actions">
+            <button class="admin-btn btn-deliver" data-id="${id}">✔ Delivered</button>
+            <button class="admin-btn btn-cancel" data-id="${id}">✖ Cancel</button>
+          </div>
+        ` : ''}
+        <div class="admin-actions" style="margin-top:8px;">
+          <button class="admin-btn btn-print" onclick="printOrder('${id}')">🖨️ Print Receipt</button>
+          <a href="https://wa.me/${waPhone}?text=${waMsg}" target="_blank" class="admin-btn btn-whatsapp">💬 Notify via WhatsApp</a>
+        </div>
         <button class="btn-delete-manual" data-id="${id}">🗑 Delete this order</button>
       </div>`;
     }
+
+    let previousPendingCount = -1;
 
     onSnapshot(query(collection(db, "orders"), orderBy("timestamp", "desc")), async (snapshot) => {
       if (!auth.currentUser || auth.currentUser.email !== ADMIN_EMAIL) return;
 
       const TWO_DAYS_MS = 2 * 24 * 60 * 60 * 1000;
-      const now = Date.now();
+      const now = new Date();
+      now.setHours(0,0,0,0); // Midnight today
+      
+      const chartData = {};
+      // Initialize last 7 days for chart
+      for(let i = 6; i >= 0; i--) {
+        const d = new Date(now);
+        d.setDate(d.getDate() - i);
+        const key = d.toLocaleDateString('en-PK', { weekday: 'short', month: 'numeric', day: 'numeric' });
+        chartData[key] = 0;
+      }
 
-      // Auto-delete orders older than 2 days (delivered or cancelled only)
       const deletePromises = [];
       snapshot.forEach(docSnap => {
         const order = docSnap.data();
         if (order.status !== 'Pending' && order.timestamp) {
           const ts = order.timestamp.toDate ? order.timestamp.toDate() : new Date(order.timestamp);
-          if (now - ts.getTime() > TWO_DAYS_MS) {
+          if (Date.now() - ts.getTime() > TWO_DAYS_MS) {
             deletePromises.push(deleteDoc(doc(db, "orders", docSnap.id)));
           }
         }
       });
       await Promise.all(deletePromises);
 
-      // Separate into buckets
       const buckets = { pending:[], delivered:[], cancelled:[], all:[] };
       let todayRevenue = 0;
-      const todayStart = new Date(); todayStart.setHours(0,0,0,0);
 
       snapshot.forEach(docSnap => {
         const order = docSnap.data();
-        // Skip auto-deleted ones
+        window.globalOrders[docSnap.id] = order;
+
         if (order.status !== 'Pending' && order.timestamp) {
           const ts = order.timestamp.toDate ? order.timestamp.toDate() : new Date(order.timestamp);
-          if (now - ts.getTime() > TWO_DAYS_MS) return;
+          if (Date.now() - ts.getTime() > TWO_DAYS_MS) return;
         }
+
         const card = buildOrderCard(docSnap, order);
         const s = order.status.toLowerCase();
+        
         if (s === 'pending') buckets.pending.push(card);
         else if (s === 'delivered') buckets.delivered.push(card);
         else if (s === 'cancelled') buckets.cancelled.push(card);
         buckets.all.push(card);
 
+        // Chart & Revenue calculation
         if (s === 'delivered' && order.timestamp) {
           const ts = order.timestamp.toDate ? order.timestamp.toDate() : new Date(order.timestamp);
-          if (ts >= todayStart) todayRevenue += (order.totalPrice || 0);
+          if (ts >= now) todayRevenue += (order.totalPrice || 0);
+          
+          // Chart Logic
+          const orderDateKey = ts.toLocaleDateString('en-PK', { weekday: 'short', month: 'numeric', day: 'numeric' });
+          if(chartData[orderDateKey] !== undefined) {
+             chartData[orderDateKey] += (order.totalPrice || 0);
+          }
         }
       });
+
+      // Ding sound if new pending order
+      if (previousPendingCount !== -1 && buckets.pending.length > previousPendingCount) {
+        const audio = document.getElementById('orderDing');
+        audio.play().catch(e => console.log('Audio autoplay blocked', e));
+      }
+      previousPendingCount = buckets.pending.length;
 
       // Update stats
       document.getElementById('countPending').innerText = buckets.pending.length;
@@ -1311,16 +1440,24 @@
       // Render grids
       ['pending','delivered','cancelled','all'].forEach(key => {
         const grid = document.getElementById('grid-' + key);
-        const empty = {
-          pending: 'No pending orders right now. 🎉',
-          delivered: 'No delivered orders yet.',
-          cancelled: 'No cancelled orders.',
-          all: 'No orders found.'
-        };
-        grid.innerHTML = buckets[key].length
-          ? buckets[key].join('')
-          : `<p class="admin-empty-msg">${empty[key]}</p>`;
+        const empty = { pending: 'No pending orders right now. 🎉', delivered: 'No delivered orders yet.', cancelled: 'No cancelled orders.', all: 'No orders found.' };
+        grid.innerHTML = buckets[key].length ? buckets[key].join('') : `<p class="admin-empty-msg">${empty[key]}</p>`;
       });
+
+      // Render Chart
+      let maxRev = Math.max(...Object.values(chartData), 1000); // minimum scale 1000
+      let chartHtml = '';
+      for (const [day, revenue] of Object.entries(chartData)) {
+         const heightPct = Math.max((revenue / maxRev) * 100, 2); // Min 2% height for visibility
+         chartHtml += `
+           <div class="chart-bar-wrap">
+             <div class="chart-val">${revenue > 0 ? (revenue/1000).toFixed(1)+'k' : '0'}</div>
+             <div class="chart-bar" style="height: ${heightPct}%;"></div>
+             <div class="chart-label">${day.split(',')[0]}</div>
+           </div>
+         `;
+      }
+      document.getElementById('salesChart').innerHTML = chartHtml;
 
       // Event listeners for action buttons
       document.querySelectorAll('.btn-deliver').forEach(btn => {
