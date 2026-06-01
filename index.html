@@ -607,7 +607,21 @@
           <div class="form-group"><input type="password" id="loginPassword" placeholder="Password" required></div>
           <button type="submit" class="btn-full">Sign In</button>
         </form>
-        <p class="modal-footer">No account? <span id="showRegister">Create one</span></p>
+        <p class="modal-footer">No account? <span id="showRegister">Create one</span> | <span id="showPhoneAuth" style="cursor:pointer; font-weight:600; color:var(--red);">Phone Login</span></p>
+      </div>
+      <div id="phoneAuthView" style="display:none;">
+        <h2 class="modal-title">Quick Checkout</h2>
+        <p class="modal-subtitle">Login securely with your phone number.</p>
+        <form id="phoneAuthForm">
+          <div class="form-group"><input type="tel" id="phoneNumber" placeholder="+923XXXXXXXXX" required></div>
+          <div id="recaptcha-container" style="margin-bottom:10px;"></div>
+          <button type="submit" class="btn-full" id="sendOtpBtn">Send OTP</button>
+        </form>
+        <form id="otpForm" style="display:none;">
+          <div class="form-group"><input type="text" id="otpCode" placeholder="Enter 6-digit OTP" required></div>
+          <button type="submit" class="btn-full" id="verifyOtpBtn">Verify & Login</button>
+        </form>
+        <p class="modal-footer">Back to <span id="showEmailLogin2" style="cursor:pointer; font-weight:600; color:var(--red);">Email Login</span></p>
       </div>
       <div id="registerView" style="display:none;">
         <h2 class="modal-title">Join Cukoos</h2>
@@ -1008,7 +1022,7 @@
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut, RecaptchaVerifier, signInWithPhoneNumber } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
     import { getFirestore, collection, addDoc, doc, updateDoc, deleteDoc, onSnapshot, query, orderBy, where, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
     const firebaseConfig = {
@@ -1027,6 +1041,7 @@
     
     // Globals for external actions
     window.globalOrders = {};
+    window.customerOrdersMap = {};
     let customerUnsubscribe = null;
 
     /* ── Scroll Reveal ── */
@@ -1107,6 +1122,15 @@
     document.getElementById('showRegister').addEventListener('click', () => { document.getElementById('loginView').style.display='none'; document.getElementById('registerView').style.display='block'; });
     document.getElementById('showLogin').addEventListener('click', () => { document.getElementById('registerView').style.display='none'; document.getElementById('loginView').style.display='block'; });
 
+    document.getElementById('showPhoneAuth').addEventListener('click', () => {
+      document.getElementById('loginView').style.display='none';
+      document.getElementById('phoneAuthView').style.display='block';
+    });
+    document.getElementById('showEmailLogin2').addEventListener('click', () => {
+      document.getElementById('phoneAuthView').style.display='none';
+      document.getElementById('loginView').style.display='block';
+    });
+
     authButton.addEventListener('click', () => {
       toggleMobileMenu(true);
       if (auth.currentUser) { signOut(auth).then(() => showToast("Signed out. See you soon!")); }
@@ -1138,6 +1162,47 @@
       e.preventDefault();
       try { await signInWithEmailAndPassword(auth, document.getElementById('loginEmail').value, document.getElementById('loginPassword').value); showToast("Welcome back! 🔥"); }
       catch (err) { showToast("Invalid credentials. Try again."); }
+    });
+
+    /* ── Phone Auth Logic ── */
+    document.getElementById('phoneAuthForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const phone = document.getElementById('phoneNumber').value;
+      const btn = document.getElementById('sendOtpBtn');
+      btn.innerText = "Sending..."; btn.disabled = true;
+
+      if(!window.recaptchaVerifier) {
+         window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', { 'size': 'invisible' });
+      }
+
+      signInWithPhoneNumber(auth, phone, window.recaptchaVerifier)
+        .then((confirmationResult) => {
+          window.confirmationResult = confirmationResult;
+          document.getElementById('phoneAuthForm').style.display = 'none';
+          document.getElementById('otpForm').style.display = 'block';
+          showToast("OTP Sent!");
+        }).catch((error) => {
+          showToast("Error: " + error.message);
+          btn.innerText = "Send OTP"; btn.disabled = false;
+        });
+    });
+
+    document.getElementById('otpForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const code = document.getElementById('otpCode').value;
+      const btn = document.getElementById('verifyOtpBtn');
+      btn.innerText = "Verifying..."; btn.disabled = true;
+      window.confirmationResult.confirm(code).then((result) => {
+        showToast("Logged in successfully! 🔥");
+        toggleModal(authModal, false);
+        document.getElementById('otpForm').style.display = 'none';
+        document.getElementById('phoneAuthForm').style.display = 'block';
+        btn.innerText = "Verify & Login"; btn.disabled = false;
+        document.getElementById('sendOtpBtn').innerText = "Send OTP"; document.getElementById('sendOtpBtn').disabled = false;
+      }).catch((error) => {
+        showToast("Invalid OTP");
+        btn.innerText = "Verify & Login"; btn.disabled = false;
+      });
     });
 
     /* ── Options Modal ── */
@@ -1210,11 +1275,21 @@
 
     document.getElementById('checkoutForm').addEventListener('submit', async (e) => {
       e.preventDefault();
+      
+      const allowedAreas = ["bharakahu", "murree road", "jillani more", "simly dam", "nai abadi", "kiani road", "manga", "phulgran", "qau", "islamabad"];
+      const address = document.getElementById('deliveryAddress').value.toLowerCase();
+      const isAllowed = allowedAreas.some(area => address.includes(area));
+
+      if(!isAllowed) {
+        showToast("Sorry! We currently only deliver to Bharakahu and nearby areas.");
+        return;
+      }
+
       const btn = document.getElementById('confirmOrderBtn');
       btn.innerText = "Processing..."; btn.disabled = true;
       try {
         await addDoc(collection(db, "orders"), {
-          userId: auth.currentUser.uid, userEmail: auth.currentUser.email,
+          userId: auth.currentUser.uid, userEmail: auth.currentUser.email || auth.currentUser.phoneNumber,
           customerPhone: document.getElementById('customerPhone').value,
           deliveryAddress: document.getElementById('deliveryAddress').value,
           items: cart, totalPrice: cart.reduce((s, i) => s + i.price, 0),
@@ -1230,6 +1305,17 @@
       } catch (err) { showToast("Error placing order. Try again."); btn.innerText = "Place My Order"; btn.disabled = false; }
     });
 
+    /* ── Re-order Logic ── */
+    window.reorder = function(orderId) {
+      const items = window.customerOrdersMap[orderId];
+      if(!items) return;
+      items.forEach(item => { window.addToCart(item.name, item.price); });
+      showToast("Previous items added to cart! 🛒");
+      cartSidebar.classList.add('open');
+      document.body.classList.add('no-scroll');
+      navigate('menu');
+    };
+
     /* ── Customer Orders Tracking ── */
     function fetchCustomerOrders(uid) {
       if(customerUnsubscribe) customerUnsubscribe();
@@ -1237,12 +1323,13 @@
       customerUnsubscribe = onSnapshot(q, (snapshot) => {
         const grid = document.getElementById('customerOrdersGrid');
         if (snapshot.empty) {
-          grid.innerHTML = '<p class="admin-empty-msg">You haven\'t placed any orders yet. 🍕</p>';
+          grid.innerHTML = '<p class="admin-empty-msg">You haven't placed any orders yet. 🍕</p>';
           return;
         }
         let html = '';
         snapshot.forEach(docSnap => {
           const order = docSnap.data();
+          window.customerOrdersMap[docSnap.id] = order.items;
           const statusClass = order.status.toLowerCase();
           const timeStr = formatTime(order.timestamp);
           const itemsSummary = order.items ? order.items.map(i => `• ${i.name}`).join('<br>') : '';
@@ -1256,6 +1343,7 @@
             <span class="order-time-badge">🕒 ${timeStr}</span> ${etaBadge}
             <div class="order-items-list">${itemsSummary}</div>
             <p style="font-size:16px; color:var(--red); font-weight:700;">Total: Rs ${order.totalPrice}</p>
+            <button class="btn-outline" style="margin-top:12px; width:100%; padding: 8px;" onclick="reorder('${docSnap.id}')">↻ Re-order</button>
           </div>`;
         });
         grid.innerHTML = html;
@@ -1491,3 +1579,6 @@
   </script>
 </body>
 </html>
+
+cukoos_updated.html
+Displaying cukoos_updated.html.
